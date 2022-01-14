@@ -1,7 +1,7 @@
 # VineCorrupt
 Archive of old VineCorrupt project
 
-Not maintained since probably around 2015. Code is of dubious quality, but is just here for archival purposes.
+Not maintained since probably around 2015. Code is of dubious quality, but is just here for archival purposes. Code has not been modified since whenever I built v1.1 (unless I had changes that never got built into a potential v1.2).
 
 Should work with MSVC 2022.
 
