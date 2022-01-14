@@ -1,0 +1,1471 @@
+﻿<Window x:Class="VineCorrupt.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="VineCorrupt" Width="600" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Icon="img/vineblock_corruption.png" Loaded="Window_Loaded" SizeToContent="Height" Closed="Window_Closed" PreviewKeyDown="Window_PreviewKeyDown">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="#222"/>
+                <Setter Property="Foreground" Value="#eee"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border 
+                                   x:Name="Border"  
+                                   CornerRadius="2" 
+                                   BorderThickness="1"
+                                   Background="#222"
+                                   BorderBrush="#eee">
+                                <ContentPresenter 
+                                     Margin="2"
+                                     HorizontalAlignment="Center"
+                                     VerticalAlignment="Center"
+                                     RecognizesAccessKey="True"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsKeyboardFocused" Value="true">
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="#aaa" />
+                                </Trigger>
+                                <Trigger Property="IsDefaulted" Value="true">
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="#eee" />
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="#FF93EC27" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="true">
+                                    <Setter TargetName="Border" Property="Background" Value="#111" />
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="#eee" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="#999" />
+                                    <Setter Property="Foreground" Value="#ccc"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="{x:Type TextBox}">
+                <Setter Property="SnapsToDevicePixels" Value="True"/>
+                <Setter Property="OverridesDefaultStyle" Value="True"/>
+                <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                <Setter Property="AllowDrop" Value="true"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TextBox}">
+                            <Border 
+                                Name="Border"
+                                CornerRadius="2" 
+                                Padding="2"
+                                Background="#222"
+                                BorderBrush="#eee"
+                                BorderThickness="1" >
+                                <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="True">
+                                    <Setter TargetName="Border" Property="Background" Value="#222"/>
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="#eee"/>
+                                    <Setter Property="Foreground" Value="#eee"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="#FF93EC27"/>
+                                    <Setter Property="Foreground" Value="#eee"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="{x:Type Label}">
+                <Setter Property="Foreground" Value="#eee"/>
+            </Style>
+
+            <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="Background" Value="#282828"/>
+                <Setter Property="Foreground" Value="#eee"/>
+            </Style>
+
+            <Style TargetType="{x:Type RichTextBox}">
+                <Setter Property="Background" Value="#282828"/>
+                <Setter Property="Foreground" Value="#eee"/>
+            </Style>
+
+            <Style TargetType="{x:Type CheckBox}">
+                <Setter Property="Foreground" Value="#eee"/>
+            </Style>
+
+            <Style TargetType="{x:Type RadioButton}">
+                <Setter Property="Foreground" Value="#eee"/>
+            </Style>
+
+            <Style TargetType="{x:Type GroupBox}">
+                <Setter Property="Foreground" Value="#eee"/>
+            </Style>
+
+            <Style TargetType="{x:Type TreeView}">
+                <Setter Property="Background" Value="#222"/>
+                <Setter Property="Foreground" Value="#eee"/>
+            </Style>
+
+            <Style TargetType="{x:Type ListBox}">
+                <Setter Property="Background" Value="#222"/>
+                <Setter Property="Foreground" Value="#eee"/>
+            </Style>
+
+            <Style TargetType="{x:Type ListBoxItem}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                            <Border x:Name="Bd"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Padding="{TemplateBinding Padding}"
+                        SnapsToDevicePixels="True">
+                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Content="{TemplateBinding Content}"
+                                    ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsMouseOver" Value="True" />
+                                    </MultiTrigger.Conditions>
+
+                                    <Setter TargetName="Bd" Property="Background" Value="#1F93EC27" />
+                                    <Setter TargetName="Bd" Property="BorderBrush" Value="#A893EC27" />
+                                </MultiTrigger>
+
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="Selector.IsSelectionActive" Value="False" />
+                                        <Condition Property="IsSelected" Value="True" />
+                                    </MultiTrigger.Conditions>
+                                    <Setter TargetName="Bd" Property="Background" Value="#8F93EC27" />
+                                    <Setter TargetName="Bd" Property="BorderBrush" Value="#FF93EC27" />
+                                </MultiTrigger>
+
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="Selector.IsSelectionActive" Value="True" />
+                                        <Condition Property="IsSelected" Value="True" />
+                                    </MultiTrigger.Conditions>
+
+                                    <Setter TargetName="Bd" Property="Background" Value="#AF93EC27" />
+                                    <Setter TargetName="Bd" Property="BorderBrush" Value="#FF93EC27" />
+                                </MultiTrigger>
+
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter TargetName="Bd" Property="TextElement.Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="{x:Type ComboBoxItem}">
+                <Setter Property="Foreground" Value="#EEEEEE"/>
+                <Setter Property="Background" Value="#282828"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Style.Triggers>
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="Background" Value="#FF93EC27" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <!-- Fill Brushes -->
+
+            <LinearGradientBrush x:Key="NormalBrush" StartPoint="0,0" EndPoint="0,1">
+                <GradientBrush.GradientStops>
+                    <GradientStopCollection>
+                        <GradientStop Color="#444" Offset="0.0"/>
+                        <GradientStop Color="#444" Offset="1.0"/>
+                    </GradientStopCollection>
+                </GradientBrush.GradientStops>
+            </LinearGradientBrush>
+
+            <LinearGradientBrush x:Key="HorizontalNormalBrush" StartPoint="0,0" EndPoint="1,0">
+                <GradientBrush.GradientStops>
+                    <GradientStopCollection>
+                        <GradientStop Color="#444" Offset="0.0"/>
+                        <GradientStop Color="#444" Offset="1.0"/>
+                    </GradientStopCollection>
+                </GradientBrush.GradientStops>
+            </LinearGradientBrush>
+
+            <LinearGradientBrush x:Key="LightBrush" StartPoint="0,0" EndPoint="0,1">
+                <GradientBrush.GradientStops>
+                    <GradientStopCollection>
+                        <GradientStop Color="#444" Offset="0.0"/>
+                        <GradientStop Color="#444" Offset="1.0"/>
+                    </GradientStopCollection>
+                </GradientBrush.GradientStops>
+            </LinearGradientBrush>
+
+            <LinearGradientBrush x:Key="HorizontalLightBrush" StartPoint="0,0" EndPoint="1,0">
+                <GradientBrush.GradientStops>
+                    <GradientStopCollection>
+                        <GradientStop Color="#888" Offset="0.0"/>
+                        <GradientStop Color="#888" Offset="1.0"/>
+                    </GradientStopCollection>
+                </GradientBrush.GradientStops>
+            </LinearGradientBrush>
+
+            <LinearGradientBrush x:Key="DarkBrush" StartPoint="0,0" EndPoint="0,1">
+                <GradientBrush.GradientStops>
+                    <GradientStopCollection>
+                        <GradientStop Color="#444" Offset="0.0"/>
+                        <GradientStop Color="#444" Offset="1.0"/>
+                    </GradientStopCollection>
+                </GradientBrush.GradientStops>
+            </LinearGradientBrush>
+
+            <LinearGradientBrush x:Key="PressedBrush" StartPoint="0,0" EndPoint="0,1">
+                <GradientBrush.GradientStops>
+                    <GradientStopCollection>
+                        <GradientStop Color="#888" Offset="0.0"/>
+                        <GradientStop Color="#444" Offset="0.1"/>
+                        <GradientStop Color="#444" Offset="0.9"/>
+                        <GradientStop Color="#111" Offset="1.0"/>
+                    </GradientStopCollection>
+                </GradientBrush.GradientStops>
+            </LinearGradientBrush>
+
+            <SolidColorBrush x:Key="DisabledForegroundBrush" Color="#888" />
+
+            <SolidColorBrush x:Key="DisabledBackgroundBrush" Color="#EEE" />
+
+            <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#FFF" />
+
+            <SolidColorBrush x:Key="SelectedBackgroundBrush" Color="#DDD" />
+
+            <!-- Border Brushes -->
+
+            <LinearGradientBrush x:Key="NormalBorderBrush" StartPoint="0,0" EndPoint="0,1">
+                <GradientBrush.GradientStops>
+                    <GradientStopCollection>
+                        <GradientStop Color="#eee" Offset="0.0"/>
+                        <GradientStop Color="#eee" Offset="1.0"/>
+                    </GradientStopCollection>
+                </GradientBrush.GradientStops>
+            </LinearGradientBrush>
+
+            <LinearGradientBrush x:Key="HorizontalNormalBorderBrush" StartPoint="0,0" EndPoint="1,0">
+                <GradientBrush.GradientStops>
+                    <GradientStopCollection>
+                        <GradientStop Color="#CCC" Offset="0.0"/>
+                        <GradientStop Color="#444" Offset="1.0"/>
+                    </GradientStopCollection>
+                </GradientBrush.GradientStops>
+            </LinearGradientBrush>
+
+            <LinearGradientBrush x:Key="DefaultedBorderBrush" StartPoint="0,0" EndPoint="0,1">
+                <GradientBrush.GradientStops>
+                    <GradientStopCollection>
+                        <GradientStop Color="#777" Offset="0.0"/>
+                        <GradientStop Color="#000" Offset="1.0"/>
+                    </GradientStopCollection>
+                </GradientBrush.GradientStops>
+            </LinearGradientBrush>
+
+            <LinearGradientBrush x:Key="PressedBorderBrush" StartPoint="0,0" EndPoint="0,1">
+                <GradientBrush.GradientStops>
+                    <GradientStopCollection>
+                        <GradientStop Color="#444" Offset="0.0"/>
+                        <GradientStop Color="#888" Offset="1.0"/>
+                    </GradientStopCollection>
+                </GradientBrush.GradientStops>
+            </LinearGradientBrush>
+
+            <SolidColorBrush x:Key="DisabledBorderBrush" Color="#AAA" />
+
+            <SolidColorBrush x:Key="SolidBorderBrush" Color="#888" />
+
+            <SolidColorBrush x:Key="LightBorderBrush" Color="#AAA" />
+
+            <!-- Miscellaneous Brushes -->
+            <SolidColorBrush x:Key="GlyphBrush" Color="#222" />
+            <SolidColorBrush x:Key="GlyphPressedBrush" Color="#282828" />
+            <SolidColorBrush x:Key="VinesauceGreenBrush" Color="#FF93EC27" />
+
+            <SolidColorBrush x:Key="LightColorBrush" Color="#DDD" />
+            <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="20" />
+                    </Grid.ColumnDefinitions>
+                    <Border
+                        x:Name="Border" 
+                        Grid.ColumnSpan="2"
+                        CornerRadius="2"
+                        Background="{DynamicResource GlyphBrush}"
+                        BorderBrush="{StaticResource NormalBorderBrush}"
+                        BorderThickness="1" />
+                    <Border 
+                        Grid.Column="0"
+                        CornerRadius="2,0,0,2" 
+                        Margin="1" 
+                        Background="{DynamicResource GlyphBrush}" 
+                        BorderBrush="{StaticResource NormalBorderBrush}"
+                        BorderThickness="0,0,1,0" />
+                    <Path 
+                    x:Name="Arrow"
+                    Grid.Column="1"     
+                    Fill="{StaticResource NormalBorderBrush}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Data="M 0 0 L 4 4 L 8 0 Z"/>
+                </Grid>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="ToggleButton.IsMouseOver" Value="true">
+                        <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource VinesauceGreenBrush}" />
+                    </Trigger>
+                    <Trigger Property="ToggleButton.IsChecked" Value="true">
+                        <Setter TargetName="Border" Property="Background" Value="{StaticResource GlyphPressedBrush}" />
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter TargetName="Border" Property="Background" Value="{StaticResource DisabledBackgroundBrush}" />
+                        <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource DisabledBorderBrush}" />
+                        <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}"/>
+                        <Setter TargetName="Arrow" Property="Fill" Value="{StaticResource DisabledForegroundBrush}" />
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="ComboBoxTextBox" TargetType="TextBox">
+                <Border x:Name="PART_ContentHost" Focusable="False" Background="{TemplateBinding Background}" />
+            </ControlTemplate>
+
+            <Style x:Key="{x:Type ComboBox}" TargetType="ComboBox">
+                <Setter Property="SnapsToDevicePixels" Value="true"/>
+                <Setter Property="OverridesDefaultStyle" Value="true"/>
+                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+                <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+                <Setter Property="MinWidth" Value="120"/>
+                <Setter Property="MinHeight" Value="20"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ComboBox">
+                            <Grid>
+                                <ToggleButton 
+                                    Name="ToggleButton" 
+                                    Template="{StaticResource ComboBoxToggleButton}" 
+                                    Grid.Column="2" 
+                                    Focusable="false"
+                                    IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
+                                    ClickMode="Press">
+                                </ToggleButton>
+                                <ContentPresenter
+                                    Name="ContentSite"
+                                    IsHitTestVisible="False" 
+                                    Content="{TemplateBinding SelectionBoxItem}"
+                                    ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                    ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                    Margin="3,3,23,3"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Left" />
+                                <TextBox x:Name="PART_EditableTextBox"
+                                    Style="{x:Null}" 
+                                    Template="{StaticResource ComboBoxTextBox}" 
+                                    HorizontalAlignment="Left" 
+                                    VerticalAlignment="Center" 
+                                    Margin="3,3,23,3"
+                                    Focusable="True" 
+                                    Background="Transparent"
+                                    Visibility="Hidden"
+                                    IsReadOnly="{TemplateBinding IsReadOnly}"/>
+                                <Popup 
+                                    Name="Popup"
+                                    Placement="Bottom"
+                                    IsOpen="{TemplateBinding IsDropDownOpen}"
+                                    AllowsTransparency="True" 
+                                    Focusable="False"
+                                    PopupAnimation="Slide">
+                                    <Grid 
+                                        Name="DropDown"
+                                        SnapsToDevicePixels="True"                
+                                        MinWidth="{TemplateBinding ActualWidth}"
+                                        MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                        <Border 
+                                            x:Name="DropDownBorder"
+                                            Background="{StaticResource GlyphBrush}"
+                                            BorderThickness="1"
+                                            BorderBrush="{StaticResource SolidBorderBrush}"/>
+                                        <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
+                                            <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                        </ScrollViewer>
+                                    </Grid>
+                                </Popup>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="HasItems" Value="false">
+                                    <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}"/>
+                                </Trigger>
+                                <Trigger Property="IsGrouping" Value="true">
+                                    <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                                </Trigger>
+                                <Trigger SourceName="Popup" Property="Popup.AllowsTransparency" Value="true">
+                                    <Setter TargetName="DropDownBorder" Property="CornerRadius" Value="4"/>
+                                    <Setter TargetName="DropDownBorder" Property="Margin" Value="0,2,0,0"/>
+                                </Trigger>
+                                <Trigger Property="IsEditable"
+               Value="true">
+                                    <Setter Property="IsTabStop" Value="false"/>
+                                    <Setter TargetName="PART_EditableTextBox" Property="Visibility"    Value="Visible"/>
+                                    <Setter TargetName="ContentSite" Property="Visibility" Value="Hidden"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                </Style.Triggers>
+            </Style>
+
+            <Style TargetType="{x:Type TabControl}">
+                <Setter Property="Background" Value="#282828"/>
+            </Style>
+
+            <Style TargetType="{x:Type TabItem}">
+                <Setter Property="Background" Value="#282828"/>
+                <Setter Property="Foreground" Value="#eee"/>
+                <Setter Property="BorderThickness" Value="3" />
+                <Setter Property="BorderBrush" Value="#FFEEEEEE" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TabItem}">
+                            <Border>
+                                <Grid>
+                                    <Grid>
+                                        <Border x:Name="Border" 
+                                            CornerRadius="3,3,0,0"
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="1,0,1,1" />
+                                    </Grid>
+                                    <Border BorderThickness="{TemplateBinding BorderThickness}"
+                                        Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter ContentSource="Header"
+                                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                    </Border>
+                                </Grid>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="#FF93EC27"/>
+                                    <Setter TargetName="Border" Property="BorderThickness" Value="1,1,1,1"/>
+                                </Trigger>
+                                <Trigger Property="IsSelected"
+                                     Value="True">
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="#FF93EC27" />
+                                    <Setter TargetName="Border" Property="BorderThickness" Value="1,5,1,1" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+
+
+    <Grid Background="#222">
+        <TabControl x:Name="tabMain" TabStripPlacement="Left" Background="#282828" Margin="0,0,0,0" VerticalAlignment="Stretch">
+            <TabItem x:Name="tabGeneral" Header="General" Height="30" Width="100">
+                <Grid Height="440">
+                    <Label Content="VineCorrupt v0.8.7" VerticalAlignment="Top" FontSize="36" FontWeight="Bold" Height="58" Width="339" Margin="0,30,10,0" HorizontalAlignment="Right">
+                        <Label.Foreground>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF1B640F" Offset="1"/>
+                                <GradientStop Color="#FF93EC27" Offset="0.26"/>
+                            </LinearGradientBrush>
+                        </Label.Foreground>
+                    </Label>
+                    <RichTextBox IsReadOnly="True" HorizontalAlignment="Left" Margin="10,115,0,0" VerticalAlignment="Top" BorderBrush="#00000000" Width="454" ClipToBounds="True" SelectionBrush="#FF80C32F" BorderThickness="0" Height="275">
+                        <FlowDocument>
+                            <Paragraph LineHeight="10">
+                                <Run Language="ja-jp" Text="Welcome to the VineCorrupt general purpose game corrupter. This is currently in development so there may be some bugs, but hopefully it will create some fun corruptions regardless."/>
+                            </Paragraph>
+                            <Paragraph LineHeight="10">
+                                <Run Language="ja-jp" Text="If you need help on how to do something then view the help section of the website:"/>
+                            </Paragraph>
+                            <Paragraph LineHeight="10" Margin="60,Auto,Auto,Auto" TextIndent="20">
+                                <Run Language="ja-jp" Text="http://www.maiddog.com/projects/corrupter/help.php"/>
+                            </Paragraph>
+                            <Paragraph LineHeight="10">
+                                <Run Language="ja-jp" Text=" Or you can visit the current thread on Vinetalk:"/>
+                            </Paragraph>
+                            <Paragraph LineHeight="10" TextAlignment="Center">
+                                <Run Language="ja-jp" Text="http://vinesauce.com/vinetalk/index.php?topic=3839.0"/>
+                            </Paragraph>
+                            <Paragraph LineHeight="10">
+                                <Run Language="ja-jp" Text="For the most part it should be similar to the Vinesauce ROM Corrupter which happened to be the inspiration behind this."/>
+                            </Paragraph>
+                            <Paragraph LineHeight="10">
+                                <Run Language="ja-jp" Text="For bug reports, suggestions, or comments please use the thread or e-mail me at:"/>
+                            </Paragraph>
+                            <Paragraph LineHeight="10" TextAlignment="Center">
+                                <Run Language="ja-jp" Text="maiddogsrl@gmail.com"/>
+                            </Paragraph>
+                        </FlowDocument>
+                    </RichTextBox>
+                    <Image HorizontalAlignment="Left" Height="100" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" Source="img/vineblock_corruption.png"/>
+                    <Button x:Name="btnUpdate" Content="Check for Updates" Width="120" Height="33" Click="btnUpdate_Click"  VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="tabHotkeys" Header="Hotkeys" Height="30" Width="100">
+                <Grid x:Name="gridHotkeys"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="300" Height="420">
+                    <Label Content="Corrupt" HorizontalAlignment="Left" Margin="3,10,0,0" VerticalAlignment="Top" ToolTip="Corrupts the rom with the current settings and runs the emulator if available." Height="26" Width="137"/>
+                    <Label Content="Increase Step Size" HorizontalAlignment="Left" Margin="3,38,0,0" VerticalAlignment="Top" ToolTip="Increases the step variable by one." Height="26" Width="137"/>
+                    <Label Content="Decrease Step Size" HorizontalAlignment="Left" Margin="3,69,0,0" VerticalAlignment="Top" ToolTip="Decreases the step variable by one." Height="26" Width="137"/>
+                    <Label Content="Increase Value" HorizontalAlignment="Left" Margin="3,100,0,0" VerticalAlignment="Top" ToolTip="Increases the currently selected corruption type's variable by one." Height="26" Width="137"/>
+                    <Label Content="Decrease Value" HorizontalAlignment="Left" Margin="3,131,0,0" VerticalAlignment="Top" ToolTip="Decreases the currently selected corruption type's variable by one." Height="26" Width="137"/>
+                    <Label Content="Change Type" HorizontalAlignment="Left" Margin="3,162,0,0" VerticalAlignment="Top" ToolTip="Changes the currently selected corruption type." Height="26" Width="137"/>
+                    <Label Content="Increase Start" HorizontalAlignment="Left" Margin="3,193,0,0" VerticalAlignment="Top" ToolTip="Increases the start byte." Height="26" Width="137"/>
+                    <Label Content="Decrease Start" HorizontalAlignment="Left" Margin="3,224,0,0" VerticalAlignment="Top" ToolTip="Decreases the start byte." Height="26" Width="137"/>
+                    <Label Content="Increase Stop" HorizontalAlignment="Left" Margin="3,255,0,0" VerticalAlignment="Top" ToolTip="Increases the end byte." Height="26" Width="137"/>
+                    <Label Content="Decrease Stop" HorizontalAlignment="Left" Margin="3,286,0,0" VerticalAlignment="Top" ToolTip="Decreases the end byte." Height="26" Width="137"/>
+                    <Label Content="Swap Sections (NES)" HorizontalAlignment="Left" Margin="3,317,0,0" VerticalAlignment="Top" ToolTip="Swaps the hotkeys from working on PRG or CHR sections on the NES tab." Height="26" Width="137"/>
+
+                    <TextBox x:Name="txtCorrupt" Tag="corrupt" HorizontalAlignment="Right" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" PreviewKeyDown="Hotkey_TextBox_KeyDown" Margin="0,10,5,0" Grid.Column="1" LostFocus="Hotkey_TextBox_LostFocus"/>
+                    <TextBox x:Name="txtIncStep" Tag="inc_step" HorizontalAlignment="Right" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" PreviewKeyDown="Hotkey_TextBox_KeyDown" Margin="0,41,5,0" Grid.Column="1" LostFocus="Hotkey_TextBox_LostFocus"/>
+                    <TextBox x:Name="txtDecStep" Tag="dec_step" HorizontalAlignment="Right" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" PreviewKeyDown="Hotkey_TextBox_KeyDown" Margin="0,72,5,0" Grid.Column="1" LostFocus="Hotkey_TextBox_LostFocus"/>
+                    <TextBox x:Name="txtIncValue" Tag="inc_value" HorizontalAlignment="Right" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" PreviewKeyDown="Hotkey_TextBox_KeyDown" Margin="0,103,5,0" Grid.Column="1" LostFocus="Hotkey_TextBox_LostFocus"/>
+                    <TextBox x:Name="txtDecValue" Tag="dec_value" HorizontalAlignment="Right" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" PreviewKeyDown="Hotkey_TextBox_KeyDown" Margin="0,134,5,0" Grid.Column="1" LostFocus="Hotkey_TextBox_LostFocus"/>
+                    <TextBox x:Name="txtChangeCorruption" Tag="change_corruption" HorizontalAlignment="Right" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" PreviewKeyDown="Hotkey_TextBox_KeyDown" Margin="0,165,5,0" Grid.Column="1" LostFocus="Hotkey_TextBox_LostFocus"/>
+                    <TextBox x:Name="txtIncStart" Tag="inc_start" HorizontalAlignment="Right" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" PreviewKeyDown="Hotkey_TextBox_KeyDown" Margin="0,196,5,0" LostFocus="Hotkey_TextBox_LostFocus"/>
+                    <TextBox x:Name="txtDecStart" Tag="dec_start" HorizontalAlignment="Right" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" PreviewKeyDown="Hotkey_TextBox_KeyDown" Margin="0,227,5,0" LostFocus="Hotkey_TextBox_LostFocus"/>
+                    <TextBox x:Name="txtIncEnd" Tag="inc_end" HorizontalAlignment="Right" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" PreviewKeyDown="Hotkey_TextBox_KeyDown" Margin="0,258,5,0" LostFocus="Hotkey_TextBox_LostFocus"/>
+                    <TextBox x:Name="txtDecEnd" Tag="dec_end" HorizontalAlignment="Right" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" PreviewKeyDown="Hotkey_TextBox_KeyDown" Margin="0,289,5,0" LostFocus="Hotkey_TextBox_LostFocus"/>
+                    <TextBox x:Name="txtSwapNES" Tag="nes_swap" HorizontalAlignment="Right" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" PreviewKeyDown="Hotkey_TextBox_KeyDown" Margin="0,320,5,0" LostFocus="Hotkey_TextBox_LostFocus"/>
+
+                    <CheckBox x:Name="chkHotkeyEnabled" Content="Enable Hotkeys" HorizontalAlignment="Left" Margin="10,392,0,0" VerticalAlignment="Top" IsChecked="True"/>
+                    <Button Content="Save Hotkeys" HorizontalAlignment="Left" Margin="145,388,0,0" VerticalAlignment="Top" Width="145" Click="Save_Hotkeys_Click"/>
+                    <Label Content="You must save before changes will take effect." HorizontalAlignment="Left" Margin="21,353,0,0" VerticalAlignment="Top" Background="#00000000" Foreground="#FF86E812"/>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="tabNES" Header="NES" Height="30" Width="100">
+
+                <Grid>
+                    <Label Content="ROM File" HorizontalAlignment="Left" Margin="10,92,0,0" VerticalAlignment="Top" Width="60"/>
+                    <Label Content="Emulator" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top"/>
+
+                    <TextBox x:Name="txtNESFile" IsTabStop="False" IsReadOnly="True" AcceptsReturn="False" HorizontalAlignment="Left" Height="23" Margin="75,93,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="323"/>
+                    <TextBox x:Name="txtNESEmulator" IsTabStop="False" IsReadOnly="True" HorizontalAlignment="Left" Height="23" Margin="75,120,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="323"/>
+
+                    <Button Content="Browse" HorizontalAlignment="Left" Margin="403,93,0,0" VerticalAlignment="Top" Width="58" Click="Browse_Click" Height="23" />
+                    <Button Content="Browse" HorizontalAlignment="Left" Margin="403,120,0,0" VerticalAlignment="Top" Width="58" Click="Emulator_Click" Height="23" />
+
+                    <Image HorizontalAlignment="Center" Height="77" VerticalAlignment="Top" Source="img/nes_blur.png" Margin="84,5,84,0"/>
+
+                    <GroupBox Header="Corruption Options" HorizontalAlignment="Left" Margin="10,155,0,0" VerticalAlignment="Top" Height="376" Width="451"  >
+                        <Grid>
+                            <GroupBox Header="PRG-ROM" HorizontalAlignment="Left" VerticalAlignment="Top" Height="199" Width="216" Margin="4,0,0,0" BorderThickness="1,1,0,1">
+                                <Grid Margin="0,0,0,0">
+                                    <ComboBox x:Name="cmbNESPRGType" HorizontalAlignment="Left" VerticalAlignment="Top" Width="192" Margin="10,116,0,0">
+                                        <ComboBoxItem IsSelected="True" Tag="--prg-shift" ToolTip="Shift a byte x places away into the current position">Shift</ComboBoxItem>
+                                        <ComboBoxItem Tag="--prg-swap" ToolTip="Swap the position of two bytes">Swap</ComboBoxItem>
+                                        <ComboBoxItem Tag="--prg-add" ToolTip="Add or subtract a value">Add</ComboBoxItem>
+                                        <ComboBoxItem Tag="--prg-set" ToolTip="Set the byte to a static value">Set</ComboBoxItem>
+                                        <ComboBoxItem Tag="--prg-random" ToolTip="Randomly generate a byte">Random</ComboBoxItem>
+                                        <ComboBoxItem Tag="--prg-rotate-left" ToolTip="Rotates bits left">Bitwise Rotate Left</ComboBoxItem>
+                                        <ComboBoxItem Tag="--prg-rotate-right" ToolTip="Rotates bits right">Bitwise Rotate Right</ComboBoxItem>
+                                        <ComboBoxItem Tag="--prg-logical-and" ToolTip="Logical AND">Bitwise AND</ComboBoxItem>
+                                        <ComboBoxItem Tag="--prg-logical-or" ToolTip="Logical OR">Bitwise OR</ComboBoxItem>
+                                        <ComboBoxItem Tag="--prg-logical-xor" ToolTip="Logical XOR">Bitwise XOR</ComboBoxItem>
+                                        <ComboBoxItem Tag="--prg-logical-complement" ToolTip="Logical Complement">Bitwise Complement</ComboBoxItem>
+                                    </ComboBox>
+                                    <TextBox x:Name="txtNESPRGStep" HorizontalAlignment="Left" Height="20" Margin="83,27,0,0" TextWrapping="NoWrap" Text="200" TextAlignment="Right" VerticalAlignment="Top" Width="69" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                                    <TextBox x:Name="txtNESPRGValue" HorizontalAlignment="Left" Height="20" Margin="10,146,0,0" TextWrapping="NoWrap" Text="20" TextAlignment="Right" VerticalAlignment="Top" Width="142" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+
+                                    <Label Content="Step Size:" HorizontalAlignment="Left" Margin="10,23,0,0" VerticalAlignment="Top" />
+
+                                    <Button x:Name="btnNESPRGStep_Inc" Content="+" HorizontalAlignment="Left" Margin="157,27,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                                    <Button x:Name="btnNESPRGStep_Dec" Content="-" HorizontalAlignment="Left" Margin="182,27,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                                    <Button x:Name="btnNESPRGShift_Inc" Content="+" HorizontalAlignment="Left" Margin="157,146,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                                    <Button x:Name="btnNESPRGShift_Dec" Content="-" HorizontalAlignment="Left" Margin="184,146,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+
+                                    <CheckBox x:Name="chkNESPRG" Content="Corrupt PRG-ROM" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Width="119" IsChecked="True" ToolTip="PRG-ROM generally holds sprite data. Good to corrupt, but not all games use it."/>
+                                    <TextBox  x:Name="txtNESPRGStart" HorizontalAlignment="Left" Height="20" Margin="83,58,0,0" TextWrapping="NoWrap" Text="0" TextAlignment="Right" VerticalAlignment="Top" Width="69" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                                    <TextBox  x:Name="txtNESPRGStop" HorizontalAlignment="Left" Height="20" Margin="83,89,0,0" TextWrapping="NoWrap" Text="0" TextAlignment="Right" VerticalAlignment="Top" Width="69" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                                    <Label Content="PRG Start:" HorizontalAlignment="Left" Margin="10,54,0,0" VerticalAlignment="Top"  RenderTransformOrigin="0.486,0.038"/>
+                                    <Label Content="PRG Stop:" HorizontalAlignment="Left" Margin="10,85,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.026,0.154" />
+                                    <Button x:Name="btnNESPRGStart_Inc" Content="+" HorizontalAlignment="Left" Margin="157,58,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                                    <Button x:Name="btnNESPRGStart_Dec" Content="-" HorizontalAlignment="Left" Margin="182,58,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                                    <Button x:Name="btnNESPRGStop_Inc" Content="+" HorizontalAlignment="Left" Margin="157,89,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                                    <Button x:Name="btnNESPRGStop_Dec" Content="-" HorizontalAlignment="Left" Margin="182,89,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                                </Grid>
+                            </GroupBox>
+                            <GroupBox Header="CHR-ROM" HorizontalAlignment="Left" Margin="220,0,0,0" VerticalAlignment="Top" Height="199" Width="216" BorderThickness="1,1,1,1">
+                                <Grid Margin="-1,0,1,0">
+                                    <ComboBox x:Name="cmbNESCHRType" HorizontalAlignment="Left" VerticalAlignment="Top" Width="192" Margin="10,116,0,0">
+                                        <ComboBoxItem IsSelected="True" Tag="--chr-shift" ToolTip="Shift a byte x places away into the current position">Shift</ComboBoxItem>
+                                        <ComboBoxItem Tag="--chr-swap" ToolTip="Swap the position of two bytes">Swap</ComboBoxItem>
+                                        <ComboBoxItem Tag="--chr-add" ToolTip="Add or subtract a value">Add</ComboBoxItem>
+                                        <ComboBoxItem Tag="--chr-set" ToolTip="Set the byte to a static value">Set</ComboBoxItem>
+                                        <ComboBoxItem Tag="--chr-random" ToolTip="Randomly generate a byte">Random</ComboBoxItem>
+                                        <ComboBoxItem Tag="--chr-rotate-left" ToolTip="Rotates bits left">Bitwise Rotate Left</ComboBoxItem>
+                                        <ComboBoxItem Tag="--chr-rotate-right" ToolTip="Rotates bits right">Bitwise Rotate Right</ComboBoxItem>
+                                        <ComboBoxItem Tag="--chr-logical-and" ToolTip="Logical AND">Bitwise AND</ComboBoxItem>
+                                        <ComboBoxItem Tag="--chr-logical-or" ToolTip="Logical OR">Bitwise OR</ComboBoxItem>
+                                        <ComboBoxItem Tag="--chr-logical-xor" ToolTip="Logical XOR">Bitwise XOR</ComboBoxItem>
+                                        <ComboBoxItem Tag="--chr-logical-complement" ToolTip="Logical Complement">Bitwise Complement</ComboBoxItem>
+                                    </ComboBox>
+                                    <TextBox  x:Name="txtNESCHRStep" HorizontalAlignment="Left" Height="20" Margin="83,27,0,0" TextWrapping="NoWrap" Text="20" TextAlignment="Right" VerticalAlignment="Top" Width="69" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                                    <TextBox  x:Name="txtNESCHRValue" HorizontalAlignment="Left" Height="20" Margin="10,146,0,0" TextWrapping="NoWrap" Text="20" TextAlignment="Right" VerticalAlignment="Top" Width="142" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+
+                                    <Label Content="Step Size:" HorizontalAlignment="Left" Margin="10,23,0,0" VerticalAlignment="Top" />
+
+                                    <Button x:Name="btnNESCHRStep_Inc" Content="+" HorizontalAlignment="Left" Margin="157,27,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                                    <Button x:Name="btnNESCHRStep_Dec" Content="-" HorizontalAlignment="Left" Margin="182,27,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                                    <Button x:Name="btnNESCHRValue_Inc" Content="+" HorizontalAlignment="Left" Margin="157,146,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                                    <Button x:Name="btnNESCHRValue_Dec" Content="-" HorizontalAlignment="Left" Margin="184,146,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+
+                                    <CheckBox x:Name="chkNESCHR" Content="Corrupt CHR-ROM" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Width="119" IsChecked="True" ToolTip="CHR-ROM generally holds sprite data. Good to corrupt, but not all games use it."/>
+                                    <TextBox  x:Name="txtNESCHRStart" HorizontalAlignment="Left" Height="20" Margin="83,58,0,0" TextWrapping="NoWrap" Text="0" TextAlignment="Right" VerticalAlignment="Top" Width="69" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                                    <TextBox  x:Name="txtNESCHRStop" HorizontalAlignment="Left" Height="20" Margin="83,89,0,0" TextWrapping="NoWrap" Text="0" TextAlignment="Right" VerticalAlignment="Top" Width="69" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                                    <Label Content="CHR Start:" HorizontalAlignment="Left" Margin="10,54,0,0" VerticalAlignment="Top"  RenderTransformOrigin="0.486,0.038"/>
+                                    <Label Content="CHR Stop:" HorizontalAlignment="Left" Margin="10,85,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.026,0.154" />
+                                    <Button x:Name="btnNESCHRStart_Inc" Content="+" HorizontalAlignment="Left" Margin="157,58,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                                    <Button x:Name="btnNESCHRStart_Dec" Content="-" HorizontalAlignment="Left" Margin="182,58,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                                    <Button x:Name="btnNESCHRStop_Inc" Content="+" HorizontalAlignment="Left" Margin="157,89,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                                    <Button x:Name="btnNESCHRStop_Dec" Content="-" HorizontalAlignment="Left" Margin="182,89,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                                </Grid>
+                            </GroupBox>
+                            <CheckBox x:Name="chkNESRun" Content="Run emulator " HorizontalAlignment="Left" Margin="280,221,0,0" VerticalAlignment="Top"  ToolTip="Will run the emulator chosen after the rom is corrupted." IsChecked="True" RenderTransformOrigin="1.253,-15.133"/>
+                            <Button Content="Save Last" HorizontalAlignment="Left" Margin="330,254,0,0" VerticalAlignment="Top"  Width="75"  ToolTip="Will allow you to save the previous corruption instead of overwriting it." Click="Save_ROM_Click"/>
+                            <Button x:Name="btnNESCorrupt" Content="Corrupt" HorizontalAlignment="Left" Margin="330,279,0,0" VerticalAlignment="Top" Width="75"  Click="NES_Corrupt_Click" ToolTip="Starts the corruption process."/>
+                            <Button Content="Save" HorizontalAlignment="Left" Margin="250,253,0,78" Width="75"  Click="NES_Save_Button_Click" ToolTip="Allows you to copy the settings of your corruption to send to other people." Height="22"/>
+                            <Button Content="Load" HorizontalAlignment="Left" Margin="250,279,0,0" VerticalAlignment="Top" Width="75"  Click="Load_Button_Click" ToolTip="Allows you to load corruption settings."/>
+
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="Information" HorizontalAlignment="Left" Margin="20,375,0,0" VerticalAlignment="Top" Height="143" Width="215">
+                        <Grid HorizontalAlignment="Left" Height="122" Margin="0,0,-2,-1" VerticalAlignment="Top" Width="205">
+                            <Label Content="Total bytes:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" ToolTip="Total amount of PRG and CHR corruptions." />
+                            <Label Content="Total Corruptions:" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" ToolTip="Total amount of PRG and CHR corruptions." />
+                            <Label Content="PRG Corruptions:" HorizontalAlignment="Left" Margin="10,64,0,0" VerticalAlignment="Top" />
+                            <Label Content="CHR Corruptions:" HorizontalAlignment="Left" Margin="10,90,0,-21" VerticalAlignment="Top" Cursor="" />
+                            <Label x:Name="lblNESSize" Content="" HorizontalContentAlignment="Right" HorizontalAlignment="Left" Margin="120,10,0,0" VerticalAlignment="Top" Width="80" FontFamily="Consolas"  FontSize="14"/>
+                            <Label x:Name="lblNESTotal" Content="" HorizontalContentAlignment="Right" HorizontalAlignment="Left" Margin="120,38,0,0" VerticalAlignment="Top" Width="80" RenderTransformOrigin="0.5,0.5" FontFamily="Consolas"  FontSize="14"/>
+                            <Label x:Name="lblNESPRG" Content="" HorizontalContentAlignment="Right" HorizontalAlignment="Left" Margin="120,64,0,0" VerticalAlignment="Top" Width="80" FontFamily="Consolas"  FontSize="14"/>
+                            <Label x:Name="lblNESCHR" Content="" HorizontalContentAlignment="Right" HorizontalAlignment="Left" Margin="120,90,0,-21" VerticalAlignment="Top" Width="80" FontFamily="Consolas"  FontSize="14"/>
+                        </Grid>
+                    </GroupBox>
+                    <Grid x:Name="NESInputBox" Visibility="Collapsed">
+                        <Grid Opacity="0.5"/>
+                        <Border
+                            MinWidth="250" 
+                            BorderBrush="#eee" 
+                            BorderThickness="1" 
+                            CornerRadius="10"
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" Background="#111">
+                            <StackPanel>
+                                <TextBlock Margin="5" Text="NES Corruption Code:" FontWeight="Bold" FontFamily="Cambria" />
+                                <TextBox  x:Name="txtNESInput" MinWidth="200" MinHeight="60" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button x:Name="NESInputSubmit" Margin="5" Content="Submit" Background="{x:Null}" Click="Submit_Click"/>
+                                    <Button x:Name="NESInputCancel" Margin="5" Content="Cancel" Background="{x:Null}" Click="Cancel_Click" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="tabSNES" Header="SNES" Height="30" Width="100">
+                <Grid>
+                    <Label Content="ROM File" HorizontalAlignment="Left" Margin="10,92,0,0" VerticalAlignment="Top" Width="60" />
+                    <Label Content="Emulator" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" />
+
+                    <TextBox  x:Name="txtSNESFile" IsTabStop="False" IsReadOnly="True" AcceptsReturn="False" HorizontalAlignment="Left" Height="23" Margin="75,93,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="323"/>
+                    <TextBox  x:Name="txtSNESEmulator" IsTabStop="False" IsReadOnly="True" HorizontalAlignment="Left" Height="23" Margin="75,120,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="323"/>
+
+                    <Button Content="Browse" HorizontalAlignment="Left" Margin="403,93,0,0" VerticalAlignment="Top" Width="58" Click="Browse_Click" Height="23" />
+                    <Button Content="Browse" HorizontalAlignment="Left" Margin="403,120,0,0" VerticalAlignment="Top" Width="58" Click="Emulator_Click" Height="23" />
+
+                    <Image HorizontalAlignment="Center" Height="77" VerticalAlignment="Top" Source="img/snes_blur.png"/>
+
+                    <GroupBox Header="Corruption Options" HorizontalAlignment="Left" Margin="10,151,0,-8" VerticalAlignment="Top" Height="195" Width="451" >
+                        <Grid>
+                            <ComboBox x:Name="cmbSNESType" HorizontalAlignment="Left" Margin="274,14,0,0" VerticalAlignment="Top" Width="155">
+                                <ComboBoxItem IsSelected="True" Tag="--shift" ToolTip="Shift a byte x places away into the current position">Shift</ComboBoxItem>
+                                <ComboBoxItem Tag="--swap" ToolTip="Swap the position of two bytes">Swap</ComboBoxItem>
+                                <ComboBoxItem Tag="--add" ToolTip="Add or subtract a value">Add</ComboBoxItem>
+                                <ComboBoxItem Tag="--set" ToolTip="Set the byte to a static value">Set</ComboBoxItem>
+                                <ComboBoxItem Tag="--random" ToolTip="Randomly generate a byte">Random</ComboBoxItem>
+                                <ComboBoxItem Tag="--rotate-left" ToolTip="Rotates bits left">Bitwise Rotate Left</ComboBoxItem>
+                                <ComboBoxItem Tag="--rotate-right" ToolTip="Rotates bits right">Bitwise Rotate Right</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-and" ToolTip="Logical AND">Bitwise AND</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-or" ToolTip="Logical OR">Bitwise OR</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-xor" ToolTip="Logical XOR">Bitwise XOR</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-complement" ToolTip="Logical Complement">Bitwise Complement</ComboBoxItem>
+                            </ComboBox>
+
+                            <TextBox  x:Name="txtSNESStep" HorizontalAlignment="Left" Height="20" Margin="83,14,0,0" TextWrapping="NoWrap" Text="400" TextAlignment="Right" VerticalAlignment="Top" Width="80" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                            <TextBox  x:Name="txtSNESValue" HorizontalAlignment="Left" Height="20" Margin="274,44,0,0" TextWrapping="NoWrap" Text="20" TextAlignment="Right" VerticalAlignment="Top" Width="105" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                            <TextBox  x:Name="txtSNESStart" HorizontalAlignment="Left" Height="20" Margin="83,44,0,0" TextWrapping="NoWrap" Text="0" TextAlignment="Right" VerticalAlignment="Top" Width="80" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                            <TextBox  x:Name="txtSNESStop" HorizontalAlignment="Left" Height="20" Margin="83,74,0,0" TextWrapping="NoWrap" Text="0" TextAlignment="Right" VerticalAlignment="Top" Width="80" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+
+                            <Label Content="Step Size:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" />
+                            <Label Content="Start:" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" />
+                            <Label Content="Stop:" HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.026,0.154" />
+                            <Label Content="Total bytes:" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" />
+                            <Label Content="Bytes corrupted:" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top" />
+                            <Label x:Name="lblSNESSize" Content="" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="118,100,0,0" VerticalAlignment="Top" Width="95" FontFamily="Consolas"  FontSize="14"/>
+                            <Label x:Name="lblSNESTotal" Content="" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="118,130,0,0" VerticalAlignment="Top" Width="95" FontFamily="Consolas"  FontSize="14"/>
+
+                            <CheckBox x:Name="chkSNESRun" Content="Run emulator " HorizontalAlignment="Left" Margin="274,79,0,0" VerticalAlignment="Top"  ToolTip="Will run the emulator chosen after the rom is corrupted." IsChecked="True"/>
+
+                            <Button x:Name="btnSNESStep_Inc" Content="+" HorizontalAlignment="Left" Margin="168,14,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnSNESStep_Dec" Content="-" HorizontalAlignment="Left" Margin="193,14,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                            <Button x:Name="btnSNESStart_Inc" Content="+" HorizontalAlignment="Left" Margin="168,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnSNESStart_Dec" Content="-" HorizontalAlignment="Left" Margin="193,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                            <Button x:Name="btnSNESStop_Inc" Content="+" HorizontalAlignment="Left" Margin="168,74,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnSNESStop_Dec" Content="-" HorizontalAlignment="Left" Margin="193,74,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                            <Button x:Name="btnSNESValue_Inc" Content="+" HorizontalAlignment="Left" Margin="384,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnSNESValue_Dec" Content="-" HorizontalAlignment="Left" Margin="409,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+
+                            <Button Content="Save Last" HorizontalAlignment="Left" Margin="354,110,0,0" VerticalAlignment="Top" Height="22" Width="75"  ToolTip="Will allow you to save the previous corruption instead of overwriting it." Click="Save_ROM_Click"/>
+                            <Button x:Name="btnSNESCorrupt" Content="Corrupt" HorizontalAlignment="Left" Margin="354,143,0,0" VerticalAlignment="Top" Height="22" Width="75"  Click="Corrupt_Click" ToolTip="Starts the corruption process."/>
+                            <Button Content="Save" HorizontalAlignment="Left" Margin="274,110,0,0" VerticalAlignment="Top" Width="75"  Click="Save_Button_Click" ToolTip="Allows you to copy the settings of your corruption to send to other people."/>
+                            <Button Content="Load" HorizontalAlignment="Left" Margin="274,143,0,0" VerticalAlignment="Top" Width="75"  Click="Load_Button_Click" ToolTip="Allows you to load corruption settings."/>
+
+                        </Grid>
+                    </GroupBox>
+                    <Grid x:Name="SNESInputBox" Visibility="Collapsed">
+                        <Grid Background="Black" Opacity="0.5"/>
+                        <Border
+                            MinWidth="250" 
+                            BorderBrush="#eee" 
+                            BorderThickness="1" 
+                            CornerRadius="10"
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" Background="#111">
+                            <StackPanel>
+                                <TextBlock Margin="5" Text="SNES Corruption Code:" FontWeight="Bold" FontFamily="Cambria" />
+                                <TextBox  x:Name="txtSNESInput" MinWidth="200" MinHeight="60" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button x:Name="SNESInputSubmit" Margin="5" Content="Submit" Background="{x:Null}" Click="Submit_Click"/>
+                                    <Button x:Name="SNESInputCancel" Margin="5" Content="Cancel" Background="{x:Null}" Click="Cancel_Click" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="tabN64" Header="Nintendo 64" Height="30" Width="100">
+                <Grid>
+                    <Label Content="ROM File" HorizontalAlignment="Left" Margin="10,92,0,0" VerticalAlignment="Top" Width="60" />
+                    <Label Content="Emulator" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" />
+
+                    <TextBox  x:Name="txtN64File" IsTabStop="False" IsReadOnly="True" AcceptsReturn="False" HorizontalAlignment="Left" Height="23" Margin="75,93,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="323"/>
+                    <TextBox  x:Name="txtN64Emulator" IsTabStop="False" IsReadOnly="True" HorizontalAlignment="Left" Height="23" Margin="75,120,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="323"/>
+
+                    <Button Content="Browse" HorizontalAlignment="Left" Margin="403,93,0,0" VerticalAlignment="Top" Width="58" Click="Browse_Click" Height="23" />
+                    <Button Content="Browse" HorizontalAlignment="Left" Margin="403,120,0,0" VerticalAlignment="Top" Width="58" Click="Emulator_Click" Height="23" />
+
+                    <Image HorizontalAlignment="Center" Height="77" VerticalAlignment="Top" Width="341" Source="img/n64_blur.png"/>
+
+                    <GroupBox Header="Corruption Options" HorizontalAlignment="Left" Margin="10,151,0,-8" VerticalAlignment="Top" Height="195" Width="451" >
+                        <Grid>
+                            <ComboBox x:Name="cmbN64Type" HorizontalAlignment="Left" Margin="274,14,0,0" VerticalAlignment="Top" Width="155">
+                                <ComboBoxItem IsSelected="True" Tag="--shift" ToolTip="Shift a byte x places away into the current position">Shift</ComboBoxItem>
+                                <ComboBoxItem Tag="--swap" ToolTip="Swap the position of two bytes">Swap</ComboBoxItem>
+                                <ComboBoxItem Tag="--add" ToolTip="Add or subtract a value">Add</ComboBoxItem>
+                                <ComboBoxItem Tag="--set" ToolTip="Set the byte to a static value">Set</ComboBoxItem>
+                                <ComboBoxItem Tag="--random" ToolTip="Randomly generate a byte">Random</ComboBoxItem>
+                                <ComboBoxItem Tag="--rotate-left" ToolTip="Rotates bits left">Bitwise Rotate Left</ComboBoxItem>
+                                <ComboBoxItem Tag="--rotate-right" ToolTip="Rotates bits right">Bitwise Rotate Right</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-and" ToolTip="Logical AND">Bitwise AND</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-or" ToolTip="Logical OR">Bitwise OR</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-xor" ToolTip="Logical XOR">Bitwise XOR</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-complement" ToolTip="Logical Complement">Bitwise Complement</ComboBoxItem>
+                            </ComboBox>
+
+                            <TextBox  x:Name="txtN64Step" HorizontalAlignment="Left" Height="20" Margin="83,14,0,0" TextWrapping="NoWrap" Text="2000" TextAlignment="Right" VerticalAlignment="Top" Width="80" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                            <TextBox  x:Name="txtN64Value" HorizontalAlignment="Left" Height="20" Margin="274,44,0,0" TextWrapping="NoWrap" Text="20" TextAlignment="Right" VerticalAlignment="Top" Width="105" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                            <TextBox  x:Name="txtN64Start" HorizontalAlignment="Left" Height="20" Margin="83,44,0,0" TextWrapping="NoWrap" Text="0" TextAlignment="Right" VerticalAlignment="Top" Width="80" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                            <TextBox  x:Name="txtN64Stop" HorizontalAlignment="Left" Height="20" Margin="83,74,0,0" TextWrapping="NoWrap" Text="0" TextAlignment="Right" VerticalAlignment="Top" Width="80" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+
+                            <Label Content="Step Size:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" />
+                            <Label Content="Start:" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" />
+                            <Label Content="Stop:" HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.026,0.154" />
+                            <Label Content="Total bytes:" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" />
+                            <Label Content="Bytes corrupted:" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top" />
+                            <Label x:Name="lblN64Size" Content="" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="118,100,0,0" VerticalAlignment="Top" Width="95" FontFamily="Consolas"  FontSize="14"/>
+                            <Label x:Name="lblN64Total" Content="" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="118,130,0,0" VerticalAlignment="Top" Width="95" FontFamily="Consolas"  FontSize="14"/>
+
+                            <CheckBox x:Name="chkN64Run" Content="Run emulator " HorizontalAlignment="Left" Margin="274,79,0,0" VerticalAlignment="Top"  ToolTip="Will run the emulator chosen after the rom is corrupted." IsChecked="True"/>
+
+                            <Button x:Name="btnN64Step_Inc" Content="+" HorizontalAlignment="Left" Margin="168,14,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnN64Step_Dec" Content="-" HorizontalAlignment="Left" Margin="193,14,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                            <Button x:Name="btnN64Start_Inc" Content="+" HorizontalAlignment="Left" Margin="168,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnN64Start_Dec" Content="-" HorizontalAlignment="Left" Margin="193,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                            <Button x:Name="btnN64Stop_Inc" Content="+" HorizontalAlignment="Left" Margin="168,74,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnN64Stop_Dec" Content="-" HorizontalAlignment="Left" Margin="193,74,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                            <Button x:Name="btnN64Value_Inc" Content="+" HorizontalAlignment="Left" Margin="384,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnN64Value_Dec" Content="-" HorizontalAlignment="Left" Margin="409,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+
+                            <Button Content="Save Last" HorizontalAlignment="Left" Margin="354,110,0,0" VerticalAlignment="Top" Height="22" Width="75"  ToolTip="Will allow you to save the previous corruption instead of overwriting it." Click="Save_ROM_Click"/>
+                            <Button x:Name="btnN64Corrupt" Content="Corrupt" HorizontalAlignment="Left" Margin="354,143,0,0" VerticalAlignment="Top" Height="22" Width="75"  Click="Corrupt_Click" ToolTip="Starts the corruption process."/>
+                            <Button Content="Save" HorizontalAlignment="Left" Margin="274,110,0,0" VerticalAlignment="Top" Width="75"  Click="Save_Button_Click" ToolTip="Allows you to copy the settings of your corruption to send to other people."/>
+                            <Button Content="Load" HorizontalAlignment="Left" Margin="274,143,0,0" VerticalAlignment="Top" Width="75"  Click="Load_Button_Click" ToolTip="Allows you to load corruption settings."/>
+
+                        </Grid>
+                    </GroupBox>
+                    <Grid x:Name="N64InputBox" Visibility="Collapsed">
+                        <Grid Background="Black" Opacity="0.5"/>
+                        <Border
+                            MinWidth="250" 
+                            BorderBrush="#eee" 
+                            BorderThickness="1" 
+                            CornerRadius="10"
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" Background="#111">
+                            <StackPanel>
+                                <TextBlock Margin="5" Text="Nintendo 64 Corruption Code:" FontWeight="Bold" FontFamily="Cambria" />
+                                <TextBox  x:Name="txtN64Input" MinWidth="200" MinHeight="60" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button x:Name="N64InputSubmit" Margin="5" Content="Submit" Background="{x:Null}" Click="Submit_Click"/>
+                                    <Button x:Name="N64InputCancel" Margin="5" Content="Cancel" Background="{x:Null}" Click="Cancel_Click" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="tabGameboy" Header="Game Boy" Height="30" Width="100">
+                <Grid>
+                    <Label Content="ROM File" HorizontalAlignment="Left" Margin="10,92,0,0" VerticalAlignment="Top" Width="60" />
+                    <Label Content="Emulator" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" />
+
+                    <TextBox  x:Name="txtGameboyFile" IsTabStop="False" IsReadOnly="True" AcceptsReturn="False" HorizontalAlignment="Left" Height="23" Margin="75,93,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="323"/>
+                    <TextBox  x:Name="txtGameboyEmulator" IsTabStop="False" IsReadOnly="True" HorizontalAlignment="Left" Height="23" Margin="75,120,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="323"/>
+
+                    <Button Content="Browse" HorizontalAlignment="Left" Margin="403,93,0,0" VerticalAlignment="Top" Width="58" Click="Browse_Click" Height="23" />
+                    <Button Content="Browse" HorizontalAlignment="Left" Margin="403,120,0,0" VerticalAlignment="Top" Width="58" Click="Emulator_Click" Height="23" />
+
+                    <Image HorizontalAlignment="Center" Height="77" VerticalAlignment="Top" Width="341" Source="img/gb_blur.png"/>
+
+                    <GroupBox Header="Corruption Options" HorizontalAlignment="Left" Margin="10,151,0,-8" VerticalAlignment="Top" Height="195" Width="451" >
+                        <Grid>
+                            <ComboBox x:Name="cmbGameboyType" HorizontalAlignment="Left" Margin="274,14,0,0" VerticalAlignment="Top" Width="155">
+                                <ComboBoxItem IsSelected="True" Tag="--shift" ToolTip="Shift a byte x places away into the current position">Shift</ComboBoxItem>
+                                <ComboBoxItem Tag="--swap" ToolTip="Swap the position of two bytes">Swap</ComboBoxItem>
+                                <ComboBoxItem Tag="--add" ToolTip="Add or subtract a value">Add</ComboBoxItem>
+                                <ComboBoxItem Tag="--set" ToolTip="Set the byte to a static value">Set</ComboBoxItem>
+                                <ComboBoxItem Tag="--random" ToolTip="Randomly generate a byte">Random</ComboBoxItem>
+                                <ComboBoxItem Tag="--rotate-left" ToolTip="Rotates bits left">Bitwise Rotate Left</ComboBoxItem>
+                                <ComboBoxItem Tag="--rotate-right" ToolTip="Rotates bits right">Bitwise Rotate Right</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-and" ToolTip="Logical AND">Bitwise AND</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-or" ToolTip="Logical OR">Bitwise OR</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-xor" ToolTip="Logical XOR">Bitwise XOR</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-complement" ToolTip="Logical Complement">Bitwise Complement</ComboBoxItem>
+                            </ComboBox>
+
+                            <TextBox  x:Name="txtGameboyStep" HorizontalAlignment="Left" Height="20" Margin="83,14,0,0" TextWrapping="NoWrap" Text="200" TextAlignment="Right" VerticalAlignment="Top" Width="80" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                            <TextBox  x:Name="txtGameboyValue" HorizontalAlignment="Left" Height="20" Margin="274,44,0,0" TextWrapping="NoWrap" Text="20" TextAlignment="Right" VerticalAlignment="Top" Width="105" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                            <TextBox  x:Name="txtGameboyStart" HorizontalAlignment="Left" Height="20" Margin="83,44,0,0" TextWrapping="NoWrap" Text="0" TextAlignment="Right" VerticalAlignment="Top" Width="80" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                            <TextBox  x:Name="txtGameboyStop" HorizontalAlignment="Left" Height="20" Margin="83,74,0,0" TextWrapping="NoWrap" Text="0" TextAlignment="Right" VerticalAlignment="Top" Width="80" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+
+                            <Label Content="Step Size:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" />
+                            <Label Content="Start:" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" />
+                            <Label Content="Stop:" HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.026,0.154" />
+                            <Label Content="Total bytes:" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" />
+                            <Label Content="Bytes corrupted:" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top" />
+                            <Label x:Name="lblGameboySize" Content="" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="118,100,0,0" VerticalAlignment="Top" Width="95" FontFamily="Consolas"  FontSize="14"/>
+                            <Label x:Name="lblGameboyTotal" Content="" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="118,130,0,0" VerticalAlignment="Top" Width="95" FontFamily="Consolas"  FontSize="14"/>
+
+                            <CheckBox x:Name="chkGameboyRun" Content="Run emulator " HorizontalAlignment="Left" Margin="274,79,0,0" VerticalAlignment="Top"  ToolTip="Will run the emulator chosen after the rom is corrupted." IsChecked="True"/>
+
+                            <Button x:Name="btnGameboyStep_Inc" Content="+" HorizontalAlignment="Left" Margin="168,14,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnGameboyStep_Dec" Content="-" HorizontalAlignment="Left" Margin="193,14,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                            <Button x:Name="btnGameboyStart_Inc" Content="+" HorizontalAlignment="Left" Margin="168,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnGameboyStart_Dec" Content="-" HorizontalAlignment="Left" Margin="193,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                            <Button x:Name="btnGameboyStop_Inc" Content="+" HorizontalAlignment="Left" Margin="168,74,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnGameboyStop_Dec" Content="-" HorizontalAlignment="Left" Margin="193,74,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                            <Button x:Name="btnGameboyValue_Inc" Content="+" HorizontalAlignment="Left" Margin="384,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnGameboyValue_Dec" Content="-" HorizontalAlignment="Left" Margin="409,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+
+                            <Button Content="Save Last" HorizontalAlignment="Left" Margin="354,110,0,0" VerticalAlignment="Top" Height="22" Width="75"  ToolTip="Will allow you to save the previous corruption instead of overwriting it." Click="Save_ROM_Click"/>
+                            <Button x:Name="btnGameboyCorrupt" Content="Corrupt" HorizontalAlignment="Left" Margin="354,143,0,0" VerticalAlignment="Top" Height="22" Width="75"  Click="Corrupt_Click" ToolTip="Starts the corruption process."/>
+                            <Button Content="Save" HorizontalAlignment="Left" Margin="274,110,0,0" VerticalAlignment="Top" Width="75"  Click="Save_Button_Click" ToolTip="Allows you to copy the settings of your corruption to send to other people."/>
+                            <Button Content="Load" HorizontalAlignment="Left" Margin="274,143,0,0" VerticalAlignment="Top" Width="75"  Click="Load_Button_Click" ToolTip="Allows you to load corruption settings."/>
+
+                        </Grid>
+                    </GroupBox>
+                    <Grid x:Name="GameboyInputBox" Visibility="Collapsed">
+                        <Grid Background="Black" Opacity="0.5"/>
+                        <Border
+                            MinWidth="250" 
+                            BorderBrush="#eee" 
+                            BorderThickness="1" 
+                            CornerRadius="10"
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" Background="#111">
+                            <StackPanel>
+                                <TextBlock Margin="5" Text="Game Boy Corruption Code:" FontWeight="Bold" FontFamily="Cambria" />
+                                <TextBox  x:Name="txtGameboyInput" MinWidth="200" MinHeight="60" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button x:Name="GameboyInputSubmit" Margin="5" Content="Submit" Background="{x:Null}" Click="Submit_Click"/>
+                                    <Button x:Name="GameboyInputCancel" Margin="5" Content="Cancel" Background="{x:Null}" Click="Cancel_Click" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+            <TabItem x:Name="tabNDS" Header="Nintendo DS" Height="30" Width="100">
+                <Grid>
+                    <Label Content="ROM File" HorizontalAlignment="Left" Margin="10,92,0,0" VerticalAlignment="Top" Width="60" />
+                    <Label Content="Extract To" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" />
+                    <Label Content="Emulator" HorizontalAlignment="Left" Margin="10,148,0,0" VerticalAlignment="Top" />
+
+                    <TextBox  x:Name="txtNDSFile" IsTabStop="False" IsReadOnly="True" HorizontalAlignment="Left" Height="23" Margin="75,92,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="323" TextChanged="txtNDSFile_TextChanged"/>
+                    <TextBox  x:Name="txtNDSExtractTo" IsTabStop="False" IsReadOnly="True" HorizontalAlignment="Left" Height="23" Margin="75,120,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="323"/>
+                    <TextBox  x:Name="txtNDSEmulator" IsTabStop="False" IsReadOnly="True" HorizontalAlignment="Left" Height="23" Margin="75,148,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="323"/>
+
+                    <Button Content="Browse" HorizontalAlignment="Left" Margin="403,92,0,0" VerticalAlignment="Top" Width="58" Click="Browse_Click" Height="23" />
+                    <Button Content="Browse" HorizontalAlignment="Left" Margin="403,120,0,0" VerticalAlignment="Top" Width="58" Click="Extract_Click" Height="23" />
+                    <Button Content="Browse" HorizontalAlignment="Left" Margin="403,148,0,0" VerticalAlignment="Top" Width="58" Click="Emulator_Click" Height="23" />
+
+                    <Image HorizontalAlignment="Center" Height="77" VerticalAlignment="Top" Width="350" Source="img/nds.png" Margin="56,10,55,0"/>
+                    <TreeView x:Name="treeNDSFileList" Margin="10,181,0,219" Height="200"/>
+
+                    <GroupBox Header="Corruption Options" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Bottom" Height="220" Width="451" >
+                        <Grid>
+                            <ComboBox x:Name="cmbNDSType" HorizontalAlignment="Left" Margin="274,14,0,0" VerticalAlignment="Top" Width="155">
+                                <ComboBoxItem IsSelected="True" Tag="--shift" ToolTip="Shift a byte x places away into the current position">Shift</ComboBoxItem>
+                                <ComboBoxItem Tag="--swap" ToolTip="Swap the position of two bytes">Swap</ComboBoxItem>
+                                <ComboBoxItem Tag="--add" ToolTip="Add or subtract a value">Add</ComboBoxItem>
+                                <ComboBoxItem Tag="--set" ToolTip="Set the byte to a static value">Set</ComboBoxItem>
+                                <ComboBoxItem Tag="--random" ToolTip="Randomly generate a byte">Random</ComboBoxItem>
+                                <ComboBoxItem Tag="--rotate-left" ToolTip="Rotates bits left">Bitwise Rotate Left</ComboBoxItem>
+                                <ComboBoxItem Tag="--rotate-right" ToolTip="Rotates bits right">Bitwise Rotate Right</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-and" ToolTip="Logical AND">Bitwise AND</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-or" ToolTip="Logical OR">Bitwise OR</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-xor" ToolTip="Logical XOR">Bitwise XOR</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-complement" ToolTip="Logical Complement">Bitwise Complement</ComboBoxItem>
+                            </ComboBox>
+
+                            <TextBox  x:Name="txtNDSStep" HorizontalAlignment="Left" Height="20" Margin="83,14,0,0" TextWrapping="NoWrap" Text="200" TextAlignment="Right" VerticalAlignment="Top" Width="80" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                            <TextBox  x:Name="txtNDSValue" HorizontalAlignment="Left" Height="20" Margin="274,44,0,0" TextWrapping="NoWrap" Text="20" TextAlignment="Right" VerticalAlignment="Top" Width="105" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                            <TextBox  x:Name="txtNDSStart" HorizontalAlignment="Left" Height="20" Margin="83,44,0,0" TextWrapping="NoWrap" Text="0" TextAlignment="Right" VerticalAlignment="Top" Width="80" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                            <TextBox  x:Name="txtNDSStop" HorizontalAlignment="Left" Height="20" Margin="83,74,0,0" TextWrapping="NoWrap" Text="0" TextAlignment="Right" VerticalAlignment="Top" Width="80" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+
+                            <Label Content="Step Size:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" />
+                            <Label Content="Start:" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" />
+                            <Label Content="Stop:" HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.026,0.154" />
+                            <Label Content="Total bytes:" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" />
+                            <Label Content="Bytes corrupted:" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top" />
+                            <Label x:Name="lblNDSSize" Content="" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="118,100,0,0" VerticalAlignment="Top" Width="95" FontFamily="Consolas"  FontSize="14"/>
+                            <Label x:Name="lblNDSTotal" Content="" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="118,130,0,0" VerticalAlignment="Top" Width="95" FontFamily="Consolas"  FontSize="14"/>
+
+                            <Label Content="Current Status:" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top" />
+                            <Label x:Name="lblNDSStatus" Content="" HorizontalAlignment="Left" HorizontalContentAlignment="Left" Margin="118,160,0,0" VerticalAlignment="Top" Width="149" FontFamily="Consolas"  FontSize="14"/>
+
+                            <CheckBox x:Name="chkNDSRun" Content="Run emulator " HorizontalAlignment="Left" Margin="274,111,0,0" VerticalAlignment="Top"  ToolTip="Will run the emulator chosen after the rom is corrupted." IsChecked="True"/>
+
+                            <Button x:Name="btnNDSStep_Inc" Content="+" HorizontalAlignment="Left" Margin="168,14,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnNDSStep_Dec" Content="-" HorizontalAlignment="Left" Margin="193,14,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                            <Button x:Name="btnNDSStart_Inc" Content="+" HorizontalAlignment="Left" Margin="168,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnNDSStart_Dec" Content="-" HorizontalAlignment="Left" Margin="193,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                            <Button x:Name="btnNDSStop_Inc" Content="+" HorizontalAlignment="Left" Margin="168,74,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnNDSStop_Dec" Content="-" HorizontalAlignment="Left" Margin="193,74,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                            <Button x:Name="btnNDSValue_Inc" Content="+" HorizontalAlignment="Left" Margin="384,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnNDSValue_Dec" Content="-" HorizontalAlignment="Left" Margin="409,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+
+                            <Button Content="Save Last" HorizontalAlignment="Left" Margin="354,135,0,0" VerticalAlignment="Top" Height="22" Width="75"  ToolTip="Will allow you to save the previous corruption instead of overwriting it." Click="Save_ROM_Click"/>
+                            <Button x:Name="btnNDSCorrupt" Content="Corrupt" HorizontalAlignment="Left" Margin="354,162,0,0" VerticalAlignment="Top" Height="22" Width="75"  Click="NDS_Corrupt_Click" ToolTip="Starts the corruption process."/>
+                            <Button Content="Save" HorizontalAlignment="Left" Margin="274,135,0,0" VerticalAlignment="Top" Width="75"  Click="Save_Button_Click" ToolTip="Allows you to copy the settings of your corruption to send to other people."/>
+                            <Button Content="Load" HorizontalAlignment="Left" Margin="274,162,0,0" VerticalAlignment="Top" Width="75"  Click="Load_Button_Click" ToolTip="Allows you to load corruption settings."/>
+
+                        </Grid>
+                    </GroupBox>
+
+                    <Grid x:Name="NDSInputBox" Visibility="Collapsed">
+                        <Grid Background="Black" Opacity="0.5"/>
+                        <Border
+                            MinWidth="250" 
+                            BorderBrush="#eee" 
+                            BorderThickness="1" 
+                            CornerRadius="10"
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" Background="#111">
+                            <StackPanel>
+                                <TextBlock Margin="5" Text="NDS Corruption Code:" FontWeight="Bold" FontFamily="Cambria" />
+                                <TextBox  x:Name="txtNDSInput" MinWidth="200" MinHeight="60" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button x:Name="NDSInputSubmit" Margin="5" Content="Submit" Background="{x:Null}" Click="Submit_Click"/>
+                                    <Button x:Name="NDSInputCancel" Margin="5" Content="Cancel" Background="{x:Null}" Click="Cancel_Click" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+            <TabItem x:Name="tabGamecube" Header="Gamecube" Height="30" Width="100">
+                <Grid>
+                    <Label Content="ROM File" HorizontalAlignment="Left" Margin="10,92,0,0" VerticalAlignment="Top" Width="60" />
+                    <Label Content="Extract To" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" />
+                    <Label Content="Emulator" HorizontalAlignment="Left" Margin="10,148,0,0" VerticalAlignment="Top" />
+
+                    <TextBox  x:Name="txtGamecubeFile" IsTabStop="False" IsReadOnly="True" HorizontalAlignment="Left" Height="23" Margin="75,92,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="323" TextChanged="txtGamecubeFile_TextChanged"/>
+                    <TextBox  x:Name="txtGamecubeExtractTo" IsTabStop="False" IsReadOnly="True" HorizontalAlignment="Left" Height="23" Margin="75,120,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="323"/>
+                    <TextBox  x:Name="txtGamecubeEmulator" IsTabStop="False" IsReadOnly="True" HorizontalAlignment="Left" Height="23" Margin="75,148,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="323"/>
+
+                    <Button Content="Browse" HorizontalAlignment="Left" Margin="403,92,0,0" VerticalAlignment="Top" Width="58" Click="Browse_Click" Height="23" />
+                    <Button Content="Browse" HorizontalAlignment="Left" Margin="403,120,0,0" VerticalAlignment="Top" Width="58" Click="Extract_Click" Height="23" />
+                    <Button Content="Browse" HorizontalAlignment="Left" Margin="403,148,0,0" VerticalAlignment="Top" Width="58" Click="Emulator_Click" Height="23" />
+
+                    <Image HorizontalAlignment="Center" Height="77" VerticalAlignment="Top" Width="350" Source="img/gc_blur.png" Margin="56,5,55,0"/>
+                    <TreeView x:Name="treeGamecubeFileList" Margin="10,181,0,219" Height="200"/>
+
+                    <GroupBox Header="Corruption Options" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Bottom" Height="220" Width="451" >
+                        <Grid>
+                            <ComboBox x:Name="cmbGamecubeType" HorizontalAlignment="Left" Margin="274,14,0,0" VerticalAlignment="Top" Width="155">
+                                <ComboBoxItem IsSelected="True" Tag="--shift" ToolTip="Shift a byte x places away into the current position">Shift</ComboBoxItem>
+                                <ComboBoxItem Tag="--swap" ToolTip="Swap the position of two bytes">Swap</ComboBoxItem>
+                                <ComboBoxItem Tag="--add" ToolTip="Add or subtract a value">Add</ComboBoxItem>
+                                <ComboBoxItem Tag="--set" ToolTip="Set the byte to a static value">Set</ComboBoxItem>
+                                <ComboBoxItem Tag="--random" ToolTip="Randomly generate a byte">Random</ComboBoxItem>
+                                <ComboBoxItem Tag="--rotate-left" ToolTip="Rotates bits left">Bitwise Rotate Left</ComboBoxItem>
+                                <ComboBoxItem Tag="--rotate-right" ToolTip="Rotates bits right">Bitwise Rotate Right</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-and" ToolTip="Logical AND">Bitwise AND</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-or" ToolTip="Logical OR">Bitwise OR</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-xor" ToolTip="Logical XOR">Bitwise XOR</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-complement" ToolTip="Logical Complement">Bitwise Complement</ComboBoxItem>
+                            </ComboBox>
+
+                            <TextBox  x:Name="txtGamecubeStep" HorizontalAlignment="Left" Height="20" Margin="83,14,0,0" TextWrapping="NoWrap" Text="200" TextAlignment="Right" VerticalAlignment="Top" Width="80" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                            <TextBox  x:Name="txtGamecubeValue" HorizontalAlignment="Left" Height="20" Margin="274,44,0,0" TextWrapping="NoWrap" Text="20" TextAlignment="Right" VerticalAlignment="Top" Width="105" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                            <TextBox  x:Name="txtGamecubeStart" HorizontalAlignment="Left" Height="20" Margin="83,44,0,0" TextWrapping="NoWrap" Text="0" TextAlignment="Right" VerticalAlignment="Top" Width="80" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                            <TextBox  x:Name="txtGamecubeStop" HorizontalAlignment="Left" Height="20" Margin="83,74,0,0" TextWrapping="NoWrap" Text="0" TextAlignment="Right" VerticalAlignment="Top" Width="80" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+
+                            <Label Content="Step Size:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" />
+                            <Label Content="Start:" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" />
+                            <Label Content="Stop:" HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.026,0.154" />
+                            <Label Content="Total bytes:" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" />
+                            <Label Content="Bytes corrupted:" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top" />
+                            <Label x:Name="lblGamecubeSize" Content="" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="118,100,0,0" VerticalAlignment="Top" Width="95" FontFamily="Consolas"  FontSize="14"/>
+                            <Label x:Name="lblGamecubeTotal" Content="" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="118,130,0,0" VerticalAlignment="Top" Width="95" FontFamily="Consolas"  FontSize="14"/>
+
+                            <Label Content="Current Status:" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top" />
+                            <Label x:Name="lblGamecubeStatus" Content="" HorizontalAlignment="Left" HorizontalContentAlignment="Left" Margin="118,160,0,0" VerticalAlignment="Top" Width="149" FontFamily="Consolas"  FontSize="14"/>
+
+                            <CheckBox x:Name="chkGamecubeRun" Content="Run emulator " HorizontalAlignment="Left" Margin="274,111,0,0" VerticalAlignment="Top"  ToolTip="Will run the emulator chosen after the rom is corrupted." IsChecked="True"/>
+
+                            <Button x:Name="btnGamecubeStep_Inc" Content="+" HorizontalAlignment="Left" Margin="168,14,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnGamecubeStep_Dec" Content="-" HorizontalAlignment="Left" Margin="193,14,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                            <Button x:Name="btnGamecubeStart_Inc" Content="+" HorizontalAlignment="Left" Margin="168,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnGamecubeStart_Dec" Content="-" HorizontalAlignment="Left" Margin="193,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                            <Button x:Name="btnGamecubeStop_Inc" Content="+" HorizontalAlignment="Left" Margin="168,74,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnGamecubeStop_Dec" Content="-" HorizontalAlignment="Left" Margin="193,74,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                            <Button x:Name="btnGamecubeValue_Inc" Content="+" HorizontalAlignment="Left" Margin="384,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnGamecubeValue_Dec" Content="-" HorizontalAlignment="Left" Margin="409,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+
+                            <Button Content="Save Last" HorizontalAlignment="Left" Margin="354,135,0,0" VerticalAlignment="Top" Height="22" Width="75"  ToolTip="Will allow you to save the previous corruption instead of overwriting it." Click="Save_ROM_Click"/>
+                            <Button x:Name="btnGamecubeCorrupt" Content="Corrupt" HorizontalAlignment="Left" Margin="354,162,0,0" VerticalAlignment="Top" Height="22" Width="75"  Click="Gamecube_Corrupt_Click" ToolTip="Starts the corruption process."/>
+                            <Button Content="Save" HorizontalAlignment="Left" Margin="274,135,0,0" VerticalAlignment="Top" Width="75"  Click="Save_Button_Click" ToolTip="Allows you to copy the settings of your corruption to send to other people."/>
+                            <Button Content="Load" HorizontalAlignment="Left" Margin="274,162,0,0" VerticalAlignment="Top" Width="75"  Click="Load_Button_Click" ToolTip="Allows you to load corruption settings."/>
+
+                        </Grid>
+                    </GroupBox>
+
+                    <Grid x:Name="GamecubeInputBox" Visibility="Collapsed">
+                        <Grid Background="Black" Opacity="0.5"/>
+                        <Border
+                            MinWidth="250" 
+                            BorderBrush="#eee" 
+                            BorderThickness="1" 
+                            CornerRadius="10"
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" Background="#111">
+                            <StackPanel>
+                                <TextBlock Margin="5" Text="Gamecube Corruption Code:" FontWeight="Bold" FontFamily="Cambria" />
+                                <TextBox  x:Name="txtGamecubeInput" MinWidth="200" MinHeight="60" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button x:Name="GamecubeInputSubmit" Margin="5" Content="Submit" Background="{x:Null}" Click="Submit_Click"/>
+                                    <Button x:Name="GamecubeInputCancel" Margin="5" Content="Cancel" Background="{x:Null}" Click="Cancel_Click" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+            <TabItem x:Name="tabWii" Header="Wii" Height="30" Width="100">
+                <Grid>
+                    <Label Content="ROM File" HorizontalAlignment="Left" Margin="10,92,0,0" VerticalAlignment="Top" Width="60" />
+                    <Label Content="Extract To" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" />
+                    <Label Content="Emulator" HorizontalAlignment="Left" Margin="10,148,0,0" VerticalAlignment="Top" />
+
+                    <TextBox  x:Name="txtWiiFile" IsTabStop="False" IsReadOnly="True" HorizontalAlignment="Left" Height="23" Margin="75,92,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="323" TextChanged="txtWiiFile_TextChanged"/>
+                    <TextBox  x:Name="txtWiiExtractTo" IsTabStop="False" IsReadOnly="True" HorizontalAlignment="Left" Height="23" Margin="75,120,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="323"/>
+                    <TextBox  x:Name="txtWiiEmulator" IsTabStop="False" IsReadOnly="True" HorizontalAlignment="Left" Height="23" Margin="75,148,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="323"/>
+
+                    <Button Content="Browse" HorizontalAlignment="Left" Margin="403,92,0,0" VerticalAlignment="Top" Width="58" Click="Browse_Click" Height="23" />
+                    <Button Content="Browse" HorizontalAlignment="Left" Margin="403,120,0,0" VerticalAlignment="Top" Width="58" Click="Extract_Click" Height="23" />
+                    <Button Content="Browse" HorizontalAlignment="Left" Margin="403,148,0,0" VerticalAlignment="Top" Width="58" Click="Emulator_Click" Height="23" />
+
+                    <Image HorizontalAlignment="Center" Height="77" VerticalAlignment="Top" Width="172" Source="img/wii.png" Margin="144,5,145,0"/>
+                    <TreeView x:Name="treeWiiFileList" Margin="10,181,0,219" Height="200"/>
+
+                    <GroupBox Header="Corruption Options" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Bottom" Height="220" Width="451" >
+                        <Grid>
+                            <ComboBox x:Name="cmbWiiType" HorizontalAlignment="Left" Margin="274,14,0,0" VerticalAlignment="Top" Width="155">
+                                <ComboBoxItem IsSelected="True" Tag="--shift" ToolTip="Shift a byte x places away into the current position">Shift</ComboBoxItem>
+                                <ComboBoxItem Tag="--swap" ToolTip="Swap the position of two bytes">Swap</ComboBoxItem>
+                                <ComboBoxItem Tag="--add" ToolTip="Add or subtract a value">Add</ComboBoxItem>
+                                <ComboBoxItem Tag="--set" ToolTip="Set the byte to a static value">Set</ComboBoxItem>
+                                <ComboBoxItem Tag="--random" ToolTip="Randomly generate a byte">Random</ComboBoxItem>
+                                <ComboBoxItem Tag="--rotate-left" ToolTip="Rotates bits left">Bitwise Rotate Left</ComboBoxItem>
+                                <ComboBoxItem Tag="--rotate-right" ToolTip="Rotates bits right">Bitwise Rotate Right</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-and" ToolTip="Logical AND">Bitwise AND</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-or" ToolTip="Logical OR">Bitwise OR</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-xor" ToolTip="Logical XOR">Bitwise XOR</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-complement" ToolTip="Logical Complement">Bitwise Complement</ComboBoxItem>
+                            </ComboBox>
+
+                            <TextBox  x:Name="txtWiiStep" HorizontalAlignment="Left" Height="20" Margin="83,14,0,0" TextWrapping="NoWrap" Text="200" TextAlignment="Right" VerticalAlignment="Top" Width="80" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                            <TextBox  x:Name="txtWiiValue" HorizontalAlignment="Left" Height="20" Margin="274,44,0,0" TextWrapping="NoWrap" Text="20" TextAlignment="Right" VerticalAlignment="Top" Width="105" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                            <TextBox  x:Name="txtWiiStart" HorizontalAlignment="Left" Height="20" Margin="83,44,0,0" TextWrapping="NoWrap" Text="0" TextAlignment="Right" VerticalAlignment="Top" Width="80" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                            <TextBox  x:Name="txtWiiStop" HorizontalAlignment="Left" Height="20" Margin="83,74,0,0" TextWrapping="NoWrap" Text="0" TextAlignment="Right" VerticalAlignment="Top" Width="80" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+
+                            <Label Content="Step Size:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" />
+                            <Label Content="Start:" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" />
+                            <Label Content="Stop:" HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.026,0.154" />
+                            <Label Content="Total bytes:" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" />
+                            <Label Content="Bytes corrupted:" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top" />
+                            <Label x:Name="lblWiiSize" Content="" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="118,100,0,0" VerticalAlignment="Top" Width="95" FontFamily="Consolas"  FontSize="14"/>
+                            <Label x:Name="lblWiiTotal" Content="" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="118,130,0,0" VerticalAlignment="Top" Width="95" FontFamily="Consolas"  FontSize="14"/>
+
+                            <Label Content="Current Status:" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top" />
+                            <Label x:Name="lblWiiStatus" Content="" HorizontalAlignment="Left" HorizontalContentAlignment="Left" Margin="118,160,0,0" VerticalAlignment="Top" Width="149" FontFamily="Consolas"  FontSize="14"/>
+
+                            <CheckBox x:Name="chkWiiRun" Content="Run emulator " HorizontalAlignment="Left" Margin="274,111,0,0" VerticalAlignment="Top"  ToolTip="Will run the emulator chosen after the rom is corrupted." IsChecked="True"/>
+
+                            <Button x:Name="btnWiiStep_Inc" Content="+" HorizontalAlignment="Left" Margin="168,14,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnWiiStep_Dec" Content="-" HorizontalAlignment="Left" Margin="193,14,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                            <Button x:Name="btnWiiStart_Inc" Content="+" HorizontalAlignment="Left" Margin="168,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnWiiStart_Dec" Content="-" HorizontalAlignment="Left" Margin="193,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                            <Button x:Name="btnWiiStop_Inc" Content="+" HorizontalAlignment="Left" Margin="168,74,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnWiiStop_Dec" Content="-" HorizontalAlignment="Left" Margin="193,74,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                            <Button x:Name="btnWiiValue_Inc" Content="+" HorizontalAlignment="Left" Margin="384,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnWiiValue_Dec" Content="-" HorizontalAlignment="Left" Margin="409,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+
+                            <Button Content="Save Last" HorizontalAlignment="Left" Margin="354,135,0,0" VerticalAlignment="Top" Height="22" Width="75"  ToolTip="Will allow you to save the previous corruption instead of overwriting it." Click="Save_ROM_Click"/>
+                            <Button x:Name="btnWiiCorrupt" Content="Corrupt" HorizontalAlignment="Left" Margin="354,162,0,0" VerticalAlignment="Top" Height="22" Width="75"  Click="Wii_Corrupt_Click" ToolTip="Starts the corruption process."/>
+                            <Button Content="Save" HorizontalAlignment="Left" Margin="274,135,0,0" VerticalAlignment="Top" Width="75"  Click="Save_Button_Click" ToolTip="Allows you to copy the settings of your corruption to send to other people."/>
+                            <Button Content="Load" HorizontalAlignment="Left" Margin="274,162,0,0" VerticalAlignment="Top" Width="75"  Click="Load_Button_Click" ToolTip="Allows you to load corruption settings."/>
+
+                        </Grid>
+                    </GroupBox>
+
+                    <Grid x:Name="WiiInputBox" Visibility="Collapsed">
+                        <Grid Background="Black" Opacity="0.5"/>
+                        <Border
+                            MinWidth="250" 
+                            BorderBrush="#eee" 
+                            BorderThickness="1" 
+                            CornerRadius="10"
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" Background="#111">
+                            <StackPanel>
+                                <TextBlock Margin="5" Text="Wii Corruption Code:" FontWeight="Bold" FontFamily="Cambria" />
+                                <TextBox  x:Name="txtWiiInput" MinWidth="200" MinHeight="60" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button x:Name="WiiInputSubmit" Margin="5" Content="Submit" Background="{x:Null}" Click="Submit_Click"/>
+                                    <Button x:Name="WiiInputCancel" Margin="5" Content="Cancel" Background="{x:Null}" Click="Cancel_Click" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="tabPlaystation" Header="PlayStation" Height="30" Width="100">
+                <Grid>
+                    <Label Content="ROM File" HorizontalAlignment="Left" Margin="10,92,0,0" VerticalAlignment="Top" Width="60" />
+                    <Label Content="Emulator" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" />
+
+                    <TextBox  x:Name="txtPlaystationFile" IsTabStop="False" IsReadOnly="True" HorizontalAlignment="Left" Height="23" Margin="75,93,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="323" TextChanged="txtPlaystationFile_TextChanged"/>
+                    <TextBox  x:Name="txtPlaystationEmulator" IsTabStop="False" IsReadOnly="True" HorizontalAlignment="Left" Height="23" Margin="75,120,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="323"/>
+
+                    <Button Content="Browse" HorizontalAlignment="Left" Margin="403,93,0,0" VerticalAlignment="Top" Width="58" Click="Browse_Click" Height="23" />
+                    <Button Content="Browse" HorizontalAlignment="Left" Margin="403,120,0,0" VerticalAlignment="Top" Width="58" Click="Emulator_Click" Height="23" />
+
+                    <Image HorizontalAlignment="Center" Height="77" VerticalAlignment="Top" Width="403" Source="img/playstation.png" Margin="29,5,29,0"/>
+                    <TreeView x:Name="treePlaystationFileList" Margin="10,155,0,245" Height="200"/>
+
+                    <GroupBox Header="Corruption Options" HorizontalAlignment="Left" Margin="10,360,0,0" VerticalAlignment="Top" Height="195" Width="451" >
+                        <Grid>
+                            <ComboBox x:Name="cmbPlaystationType" HorizontalAlignment="Left" Margin="274,14,0,0" VerticalAlignment="Top" Width="155">
+                                <ComboBoxItem IsSelected="True" Tag="--shift" ToolTip="Shift a byte x places away into the current position">Shift</ComboBoxItem>
+                                <ComboBoxItem Tag="--swap" ToolTip="Swap the position of two bytes">Swap</ComboBoxItem>
+                                <ComboBoxItem Tag="--add" ToolTip="Add or subtract a value">Add</ComboBoxItem>
+                                <ComboBoxItem Tag="--set" ToolTip="Set the byte to a static value">Set</ComboBoxItem>
+                                <ComboBoxItem Tag="--random" ToolTip="Randomly generate a byte">Random</ComboBoxItem>
+                                <ComboBoxItem Tag="--rotate-left" ToolTip="Rotates bits left">Bitwise Rotate Left</ComboBoxItem>
+                                <ComboBoxItem Tag="--rotate-right" ToolTip="Rotates bits right">Bitwise Rotate Right</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-and" ToolTip="Logical AND">Bitwise AND</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-or" ToolTip="Logical OR">Bitwise OR</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-xor" ToolTip="Logical XOR">Bitwise XOR</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-complement" ToolTip="Logical Complement">Bitwise Complement</ComboBoxItem>
+                            </ComboBox>
+
+                            <TextBox  x:Name="txtPlaystationStep" HorizontalAlignment="Left" Height="20" Margin="83,14,0,0" TextWrapping="NoWrap" Text="200" TextAlignment="Right" VerticalAlignment="Top" Width="80" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                            <TextBox  x:Name="txtPlaystationValue" HorizontalAlignment="Left" Height="20" Margin="274,44,0,0" TextWrapping="NoWrap" Text="20" TextAlignment="Right" VerticalAlignment="Top" Width="105" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                            <TextBox  x:Name="txtPlaystationStart" HorizontalAlignment="Left" Height="20" Margin="83,44,0,0" TextWrapping="NoWrap" Text="0" TextAlignment="Right" VerticalAlignment="Top" Width="80" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                            <TextBox  x:Name="txtPlaystationStop" HorizontalAlignment="Left" Height="20" Margin="83,74,0,0" TextWrapping="NoWrap" Text="0" TextAlignment="Right" VerticalAlignment="Top" Width="80" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+
+                            <Label Content="Step Size:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" />
+                            <Label Content="Start:" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" />
+                            <Label Content="Stop:" HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.026,0.154" />
+                            <Label Content="Total bytes:" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" />
+                            <Label Content="Bytes corrupted:" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top" />
+                            <Label x:Name="lblPlaystationSize" Content="" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="118,100,0,0" VerticalAlignment="Top" Width="95" FontFamily="Consolas"  FontSize="14"/>
+                            <Label x:Name="lblPlaystationTotal" Content="" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="118,130,0,0" VerticalAlignment="Top" Width="95" FontFamily="Consolas"  FontSize="14"/>
+
+                            <CheckBox x:Name="chkPlaystationRun" Content="Run emulator " HorizontalAlignment="Left" Margin="274,79,0,0" VerticalAlignment="Top"  ToolTip="Will run the emulator chosen after the rom is corrupted." IsChecked="True"/>
+
+                            <Button x:Name="btnPlaystationStep_Inc" Content="+" HorizontalAlignment="Left" Margin="168,14,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnPlaystationStep_Dec" Content="-" HorizontalAlignment="Left" Margin="193,14,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                            <Button x:Name="btnPlaystationStart_Inc" Content="+" HorizontalAlignment="Left" Margin="168,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnPlaystationStart_Dec" Content="-" HorizontalAlignment="Left" Margin="193,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                            <Button x:Name="btnPlaystationStop_Inc" Content="+" HorizontalAlignment="Left" Margin="168,74,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnPlaystationStop_Dec" Content="-" HorizontalAlignment="Left" Margin="193,74,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                            <Button x:Name="btnPlaystationValue_Inc" Content="+" HorizontalAlignment="Left" Margin="384,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnPlaystationValue_Dec" Content="-" HorizontalAlignment="Left" Margin="409,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+
+                            <Button Content="Save Last" HorizontalAlignment="Left" Margin="354,110,0,0" VerticalAlignment="Top" Height="22" Width="75"  ToolTip="Will allow you to save the previous corruption instead of overwriting it." Click="Save_ROM_Click"/>
+                            <Button x:Name="btnPlaystationCorrupt" Content="Corrupt" HorizontalAlignment="Left" Margin="354,143,0,0" VerticalAlignment="Top" Height="22" Width="75"  Click="Corrupt_Click" ToolTip="Starts the corruption process."/>
+                            <Button Content="Save" HorizontalAlignment="Left" Margin="274,110,0,0" VerticalAlignment="Top" Width="75"  Click="Save_Button_Click" ToolTip="Allows you to copy the settings of your corruption to send to other people."/>
+                            <Button Content="Load" HorizontalAlignment="Left" Margin="274,143,0,0" VerticalAlignment="Top" Width="75"  Click="Load_Button_Click" ToolTip="Allows you to load corruption settings."/>
+
+                        </Grid>
+                    </GroupBox>
+
+                    <Grid x:Name="PlaystationLoadingBox" Visibility="Collapsed">
+                        <Grid Background="Black" Opacity="0.8"/>
+                        <Border
+                            MinWidth="400" 
+                            MinHeight="250"
+                            BorderBrush="#eee" 
+                            BorderThickness="1" 
+                            CornerRadius="10"
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" Background="#111">
+                            <StackPanel>
+                                <TextBlock TextWrapping="Wrap"  Height="250" Width="390" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Margin="0"><Run Language="ja-jp" Text="Loading..."/></TextBlock>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <Grid x:Name="PlaystationInputBox" Visibility="Collapsed">
+                        <Grid Background="Black" Opacity="0.5"/>
+                        <Border
+                            MinWidth="250" 
+                            BorderBrush="#eee" 
+                            BorderThickness="1" 
+                            CornerRadius="10"
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" Background="#111">
+                            <StackPanel>
+                                <TextBlock Margin="5" Text="Playstation Corruption Code:" FontWeight="Bold" FontFamily="Cambria" />
+                                <TextBox  x:Name="txtPlaystationInput" MinWidth="200" MinHeight="60" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button x:Name="PlaystationInputSubmit" Margin="5" Content="Submit" Background="{x:Null}" Click="Submit_Click"/>
+                                    <Button x:Name="PlaystationInputCancel" Margin="5" Content="Cancel" Background="{x:Null}" Click="Cancel_Click" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="tabGenesis" Header="Sega Genesis" Height="30" Width="100">
+                <Grid>
+                    <Label Content="ROM File" HorizontalAlignment="Left" Margin="10,92,0,0" VerticalAlignment="Top" Width="60" />
+                    <Label Content="Emulator" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" />
+
+                    <TextBox  x:Name="txtGenesisFile" IsTabStop="False" IsReadOnly="True" AcceptsReturn="False" HorizontalAlignment="Left" Height="23" Margin="75,93,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="323"/>
+                    <TextBox  x:Name="txtGenesisEmulator" IsTabStop="False" IsReadOnly="True" HorizontalAlignment="Left" Height="23" Margin="75,120,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="323"/>
+
+                    <Button Content="Browse" HorizontalAlignment="Left" Margin="403,93,0,0" VerticalAlignment="Top" Width="58" Click="Browse_Click" Height="23" />
+                    <Button Content="Browse" HorizontalAlignment="Left" Margin="403,120,0,0" VerticalAlignment="Top" Width="58" Click="Emulator_Click" Height="23" />
+
+                    <Image HorizontalAlignment="Center" Height="88" VerticalAlignment="Top" Width="322" Source="img/genesis_blur.png"/>
+
+                    <GroupBox Header="Corruption Options" HorizontalAlignment="Left" Margin="10,151,0,-8" VerticalAlignment="Top" Height="195" Width="451" >
+                        <Grid>
+                            <ComboBox x:Name="cmbGenesisType" HorizontalAlignment="Left" Margin="274,14,0,0" VerticalAlignment="Top" Width="155">
+                                <ComboBoxItem IsSelected="True" Tag="--shift" ToolTip="Shift a byte x places away into the current position">Shift</ComboBoxItem>
+                                <ComboBoxItem Tag="--swap" ToolTip="Swap the position of two bytes">Swap</ComboBoxItem>
+                                <ComboBoxItem Tag="--add" ToolTip="Add or subtract a value">Add</ComboBoxItem>
+                                <ComboBoxItem Tag="--set" ToolTip="Set the byte to a static value">Set</ComboBoxItem>
+                                <ComboBoxItem Tag="--random" ToolTip="Randomly generate a byte">Random</ComboBoxItem>
+                                <ComboBoxItem Tag="--rotate-left" ToolTip="Rotates bits left">Bitwise Rotate Left</ComboBoxItem>
+                                <ComboBoxItem Tag="--rotate-right" ToolTip="Rotates bits right">Bitwise Rotate Right</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-and" ToolTip="Logical AND">Bitwise AND</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-or" ToolTip="Logical OR">Bitwise OR</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-xor" ToolTip="Logical XOR">Bitwise XOR</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-complement" ToolTip="Logical Complement">Bitwise Complement</ComboBoxItem>
+                            </ComboBox>
+
+                            <TextBox  x:Name="txtGenesisStep" HorizontalAlignment="Left" Height="20" Margin="83,14,0,0" TextWrapping="NoWrap" Text="2000" TextAlignment="Right" VerticalAlignment="Top" Width="80" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                            <TextBox  x:Name="txtGenesisValue" HorizontalAlignment="Left" Height="20" Margin="274,44,0,0" TextWrapping="NoWrap" Text="20" TextAlignment="Right" VerticalAlignment="Top" Width="105" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                            <TextBox  x:Name="txtGenesisStart" HorizontalAlignment="Left" Height="20" Margin="83,44,0,0" TextWrapping="NoWrap" Text="0" TextAlignment="Right" VerticalAlignment="Top" Width="80" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                            <TextBox  x:Name="txtGenesisStop" HorizontalAlignment="Left" Height="20" Margin="83,74,0,0" TextWrapping="NoWrap" Text="0" TextAlignment="Right" VerticalAlignment="Top" Width="80" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+
+                            <Label Content="Step Size:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" />
+                            <Label Content="Start:" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" />
+                            <Label Content="Stop:" HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.026,0.154" />
+                            <Label Content="Total bytes:" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" />
+                            <Label Content="Bytes corrupted:" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top" />
+                            <Label x:Name="lblGenesisSize" Content="" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="118,100,0,0" VerticalAlignment="Top" Width="95" FontFamily="Consolas"  FontSize="14"/>
+                            <Label x:Name="lblGenesisTotal" Content="" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="118,130,0,0" VerticalAlignment="Top" Width="95" FontFamily="Consolas"  FontSize="14"/>
+
+                            <CheckBox x:Name="chkGenesisRun" Content="Run emulator " HorizontalAlignment="Left" Margin="274,79,0,0" VerticalAlignment="Top"  ToolTip="Will run the emulator chosen after the rom is corrupted." IsChecked="True"/>
+
+                            <Button x:Name="btnGenesisStep_Inc" Content="+" HorizontalAlignment="Left" Margin="168,14,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnGenesisStep_Dec" Content="-" HorizontalAlignment="Left" Margin="193,14,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                            <Button x:Name="btnGenesisStart_Inc" Content="+" HorizontalAlignment="Left" Margin="168,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnGenesisStart_Dec" Content="-" HorizontalAlignment="Left" Margin="193,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                            <Button x:Name="btnGenesisStop_Inc" Content="+" HorizontalAlignment="Left" Margin="168,74,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnGenesisStop_Dec" Content="-" HorizontalAlignment="Left" Margin="193,74,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                            <Button x:Name="btnGenesisValue_Inc" Content="+" HorizontalAlignment="Left" Margin="384,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnGenesisValue_Dec" Content="-" HorizontalAlignment="Left" Margin="409,44,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+
+                            <Button Content="Save Last" HorizontalAlignment="Left" Margin="354,110,0,0" VerticalAlignment="Top" Height="22" Width="75"  ToolTip="Will allow you to save the previous corruption instead of overwriting it." Click="Save_ROM_Click"/>
+                            <Button x:Name="btnGenesisCorrupt" Content="Corrupt" HorizontalAlignment="Left" Margin="354,143,0,0" VerticalAlignment="Top" Height="22" Width="75"  Click="Corrupt_Click" ToolTip="Starts the corruption process."/>
+                            <Button Content="Save" HorizontalAlignment="Left" Margin="274,110,0,0" VerticalAlignment="Top" Width="75"  Click="Save_Button_Click" ToolTip="Allows you to copy the settings of your corruption to send to other people."/>
+                            <Button Content="Load" HorizontalAlignment="Left" Margin="274,143,0,0" VerticalAlignment="Top" Width="75"  Click="Load_Button_Click" ToolTip="Allows you to load corruption settings."/>
+
+                        </Grid>
+                    </GroupBox>
+                    <Grid x:Name="GenesisInputBox" Visibility="Collapsed">
+                        <Grid Background="Black" Opacity="0.5"/>
+                        <Border
+                            MinWidth="250" 
+                            BorderBrush="#eee" 
+                            BorderThickness="1" 
+                            CornerRadius="10"
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" Background="#111">
+                            <StackPanel>
+                                <TextBlock Margin="5" Text="Sega Genesis Corruption Code:" FontWeight="Bold" FontFamily="Cambria" />
+                                <TextBox  x:Name="txtGenesisInput" MinWidth="200" MinHeight="60" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button x:Name="GenesisInputSubmit" Margin="5" Content="Submit" Background="{x:Null}" Click="Submit_Click"/>
+                                    <Button x:Name="GenesisInputCancel" Margin="5" Content="Cancel" Background="{x:Null}" Click="Cancel_Click" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="tabMiscellaneous" Header="Miscellaneous" Height="30" Width="100">
+                <Grid>
+                    <ListBox x:Name="lstMiscFiles" SelectionMode="Multiple" HorizontalAlignment="Left" Height="190" Margin="10,10,0,0" VerticalAlignment="Top" Width="371"/>
+                    <Button x:Name="btnMiscAdd" Content="Add Files" HorizontalAlignment="Left" Margin="386,10,0,0" VerticalAlignment="Top" Height="23" Width="75"  Click="btnMiscAdd_Click"/>
+                    <Button x:Name="btnMiscRemove" Content="Remove Files" HorizontalAlignment="Left" Margin="386,38,0,0" VerticalAlignment="Top" Height="23" Width="75"  Click="btnMiscRemove_Click"/>
+
+                    <GroupBox Header="Corruption Options" HorizontalAlignment="Left" Margin="10,211,0,0" VerticalAlignment="Top" Height="249" Width="451">
+                        <Grid>
+                            <Label Content="Output Directory:" HorizontalAlignment="Left" Margin="10,4,0,0" VerticalAlignment="Top" />
+                            <TextBox x:Name="txtMiscOutput" IsReadOnly="True" HorizontalAlignment="Left" Height="23" Margin="10,34,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="339"/>
+                            <Button x:Name="btnMiscOutputBrowse" Content="Browse" HorizontalAlignment="Left" Margin="354,34,0,0" VerticalAlignment="Top" Width="75" Height="23" Click="btnMiscOutputBrowse_Click"/>
+                            <CheckBox x:Name="chkMiscInPlace" Content="Corrupt In-Place" HorizontalAlignment="Left" Margin="316,10,0,0" VerticalAlignment="Top" Width="113" Checked="CheckBox_Checked"  />
+
+                            <ComboBox x:Name="cmbMiscellaneousType" HorizontalAlignment="Left" Margin="274,73,0,0" VerticalAlignment="Top" Width="155">
+                                <ComboBoxItem IsSelected="True" Tag="--shift" ToolTip="Shift a byte x places away into the current position">Shift</ComboBoxItem>
+                                <ComboBoxItem Tag="--swap" ToolTip="Swap the position of two bytes">Swap</ComboBoxItem>
+                                <ComboBoxItem Tag="--add" ToolTip="Add or subtract a value">Add</ComboBoxItem>
+                                <ComboBoxItem Tag="--set" ToolTip="Set the byte to a static value">Set</ComboBoxItem>
+                                <ComboBoxItem Tag="--random" ToolTip="Randomly generate a byte">Random</ComboBoxItem>
+                                <ComboBoxItem Tag="--rotate-left" ToolTip="Rotates bits left">Bitwise Rotate Left</ComboBoxItem>
+                                <ComboBoxItem Tag="--rotate-right" ToolTip="Rotates bits right">Bitwise Rotate Right</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-and" ToolTip="Logical AND">Bitwise AND</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-or" ToolTip="Logical OR">Bitwise OR</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-xor" ToolTip="Logical XOR">Bitwise XOR</ComboBoxItem>
+                                <ComboBoxItem Tag="--logical-complement" ToolTip="Logical Complement">Bitwise Complement</ComboBoxItem>
+                            </ComboBox>
+
+                            <TextBox  x:Name="txtMiscellaneousStep" HorizontalAlignment="Left" Height="20" Margin="83,73,0,0" TextWrapping="NoWrap" Text="2000" TextAlignment="Right" VerticalAlignment="Top" Width="80" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                            <TextBox  x:Name="txtMiscellaneousValue" HorizontalAlignment="Left" Height="20" Margin="274,103,0,0" TextWrapping="NoWrap" Text="20" TextAlignment="Right" VerticalAlignment="Top" Width="105" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                            <TextBox  x:Name="txtMiscellaneousStart" HorizontalAlignment="Left" Height="20" Margin="83,103,0,0" TextWrapping="NoWrap" Text="0" TextAlignment="Right" VerticalAlignment="Top" Width="80" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+                            <TextBox  x:Name="txtMiscellaneousStop" HorizontalAlignment="Left" Height="20" Margin="83,133,0,0" TextWrapping="NoWrap" Text="0" TextAlignment="Right" VerticalAlignment="Top" Width="80" MaxLength="8" PreviewTextInput="Number_Validation" TextChanged="Text_Validation"/>
+
+                            <Label Content="Step Size:" HorizontalAlignment="Left" Margin="10,69,0,0" VerticalAlignment="Top" />
+                            <Label Content="Start:" HorizontalAlignment="Left" Margin="10,99,0,0" VerticalAlignment="Top" />
+                            <Label Content="Stop:" HorizontalAlignment="Left" Margin="10,129,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.026,0.154" />
+                            <Label Content="Total bytes:" HorizontalAlignment="Left" Margin="10,159,0,0" VerticalAlignment="Top" />
+                            <Label Content="Bytes corrupted:" HorizontalAlignment="Left" Margin="10,189,0,0" VerticalAlignment="Top" />
+                            <Label x:Name="lblMiscellaneousSize" Content="" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="118,159,0,0" VerticalAlignment="Top" Width="95" FontFamily="Consolas"  FontSize="14"/>
+                            <Label x:Name="lblMiscellaneousTotal" Content="" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="118,189,0,0" VerticalAlignment="Top" Width="95" FontFamily="Consolas"  FontSize="14"/>
+
+                            <Button x:Name="btnMiscellaneousStep_Inc" Content="+" HorizontalAlignment="Left" Margin="168,73,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnMiscellaneousStep_Dec" Content="-" HorizontalAlignment="Left" Margin="193,73,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                            <Button x:Name="btnMiscellaneousStart_Inc" Content="+" HorizontalAlignment="Left" Margin="168,103,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnMiscellaneousStart_Dec" Content="-" HorizontalAlignment="Left" Margin="193,103,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                            <Button x:Name="btnMiscellaneousStop_Inc" Content="+" HorizontalAlignment="Left" Margin="168,133,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnMiscellaneousStop_Dec" Content="-" HorizontalAlignment="Left" Margin="193,133,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                            <Button x:Name="btnMiscellaneousValue_Inc" Content="+" HorizontalAlignment="Left" Margin="384,103,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Increase_Click"/>
+                            <Button x:Name="btnMiscellaneousValue_Dec" Content="-" HorizontalAlignment="Left" Margin="409,103,0,0" VerticalAlignment="Top" Width="20" Height="20" FontSize="12"  Click="Decrease_Click"/>
+                            <Button x:Name="btnMiscellaneousCorrupt" Content="Corrupt" HorizontalAlignment="Left" Margin="354,202,0,0" VerticalAlignment="Top" Height="22" Width="75"  Click="Miscellaneous_Corrupt_Click" ToolTip="Starts the corruption process."/>
+                            <Button Content="Save" HorizontalAlignment="Left" Margin="274,171,0,0" VerticalAlignment="Top" Width="75"  Click="Save_Button_Click" ToolTip="Allows you to copy the settings of your corruption to send to other people."/>
+                            <Button Content="Load" HorizontalAlignment="Left" Margin="354,171,0,0" VerticalAlignment="Top" Width="75"  Click="Load_Button_Click" ToolTip="Allows you to load corruption settings."/>
+
+                        </Grid>
+                    </GroupBox>
+
+                    <Grid x:Name="MiscellaneousInputBox" Visibility="Collapsed">
+                        <Grid Background="Black" Opacity="0.5"/>
+                        <Border
+                            MinWidth="250" 
+                            BorderBrush="#eee" 
+                            BorderThickness="1" 
+                            CornerRadius="10"
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" Background="#111">
+                            <StackPanel>
+                                <TextBlock Margin="5" Text="Miscellaneous Corruption Code:" FontWeight="Bold" FontFamily="Cambria" />
+                                <TextBox  x:Name="txtMiscellaneousInput" MinWidth="200" MinHeight="60" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button x:Name="MiscellaneousInputSubmit" Margin="5" Content="Submit" Background="{x:Null}" Click="Submit_Click"/>
+                                    <Button x:Name="MiscellaneousInputCancel" Margin="5" Content="Cancel" Background="{x:Null}" Click="Cancel_Click" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="tabAbout" Header="About" Height="30" Width="100">
+                <Grid>
+                    <Image Source="img/maiddog.png"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

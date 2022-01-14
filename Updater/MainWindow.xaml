@@ -1,0 +1,32 @@
+﻿<Window x:Class="Updater.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Updater" Height="117" Width="400" Loaded="Window_Loaded" WindowStyle="None" WindowStartupLocation="CenterScreen" ShowInTaskbar="False">
+    <Grid Background="#FF222222">
+        <ProgressBar x:Name="progDownload" Value="100" HorizontalAlignment="Left" Height="30" Margin="10,67,0,0" VerticalAlignment="Top" Width="372">
+            <ProgressBar.Foreground>
+                <ImageBrush/>
+            </ProgressBar.Foreground>
+            <ProgressBar.Template>
+                <ControlTemplate>
+                    <Grid>
+                        <Image x:Name="PART_Track" HorizontalAlignment="Left" Source="img/longvine.png" Stretch="Fill"/>
+                        <Rectangle x:Name="PART_Indicator" HorizontalAlignment="Right" Fill="#222" RenderTransformOrigin="0.5,0.5">
+                            <Rectangle.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="180"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </Rectangle.RenderTransform>
+                        </Rectangle>
+                    </Grid>
+                </ControlTemplate>
+            </ProgressBar.Template>
+        </ProgressBar>
+        <Label Content="Currently Downloading:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Foreground="White" FontWeight="Bold"/>
+        <Label x:Name="lblDownload" Content="" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Width="372" Foreground="White" FontSize="10" FontWeight="Bold" />
+
+    </Grid>
+</Window>
